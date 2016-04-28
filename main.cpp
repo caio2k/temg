@@ -7,7 +7,7 @@ Q_DECL_EXPORT int main(int argc, char *argv[])
     QScopedPointer<QmlApplicationViewer> viewer(QmlApplicationViewer::create());
 
     viewer->setOrientation(QmlApplicationViewer::ScreenOrientationAuto);
-    viewer->setMainQmlFile(QLatin1String("qml/temg/main.qml"));
+    viewer->setMainQmlFile(QLatin1String("qml/temg.qml"));
     viewer->showExpanded();
 
     return app->exec();
