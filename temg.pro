@@ -30,7 +30,12 @@ CONFIG += qdeclarative-boostable
 # CONFIG += qt-components
 
 # The .cpp file which was generated for your project. Feel free to hack it.
-SOURCES += src/main.cpp src/chat.cpp src/chat.h
+HEADERS += \
+    src/chat.h
+
+SOURCES += \
+    src/main.cpp \
+    src/chat.cpp
 
 # Please do not modify the following two lines. Required for deployment.
 include(qmlapplicationviewer/qmlapplicationviewer.pri)
