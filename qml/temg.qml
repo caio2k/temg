@@ -19,7 +19,7 @@ PageStackWindow {
       messageDialog.open();
   }
   function addChat(name, lastMessage){
-      chatsModel.append({"name": name, "messages": [{"from": name, "message": lastMessage}]})
+      chatsModel.append({"name": name, "messages": [{"sender": name, "message": lastMessage}]})
   }
 
   Page{
@@ -118,11 +118,12 @@ PageStackWindow {
 
   ListModel{
       id: chatsModel
+      //chatName: Chat.getName
       ListElement{
-          name: "teste"
+          name: "preload"
           messages: [
-              ListElement { from: "teste"; message: "Core" },
-              ListElement { from: "teste"; message: "Deciduous" }
+              ListElement { sender: "teste"; message: "Core" },
+              ListElement { sender: "teste"; message: "Deciduous" }
                     ]
       }
   }
@@ -131,7 +132,7 @@ PageStackWindow {
       id:chatsDelegate
       Item {
           width: 200
-          height: 50
+          height: 500
           Text { id: nameField; text: name }
           //Text { text: '>' + messages; anchors.left: nameField.right }
           Row {
@@ -140,7 +141,7 @@ PageStackWindow {
               //Text { text: "Messages:" }
               Repeater {
                   model: messages
-                  Text { text:  from + ">" + message }
+                  Text { text:  sender + ">" + message }
               }
           }
       }

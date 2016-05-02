@@ -11,6 +11,7 @@ public:
 
 private:
     QString sender;
+    QString message;
 
 signals:
 
