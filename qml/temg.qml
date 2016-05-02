@@ -1,7 +1,7 @@
 import QtQuick 1.1
 import com.nokia.meego 1.0
 
-//import "components"
+import Temg.Core 1.0
 
 PageStackWindow {
   id: rootWin

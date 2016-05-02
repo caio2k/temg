@@ -9,6 +9,13 @@ class Chat : public QObject
 public:
     explicit Chat(QObject *parent = 0);
 
+    // getters and setters
+    QString getName();
+    void setName(const QString &n);
+
+private:
+    QString chatName;
+
 signals:
 
 public slots:

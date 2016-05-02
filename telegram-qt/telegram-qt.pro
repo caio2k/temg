@@ -58,3 +58,8 @@ OTHER_FILES += CMakeLists.txt
 
 LIBS += -lssl -lcrypto
 LIBS += -lz
+
+contains(MEEGO_EDITION,harmattan) {
+    target.path = /opt/telegram-qt/lib
+    INSTALLS += target
+}

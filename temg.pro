@@ -4,7 +4,7 @@ folder_qml.target = ./
 DEPLOYMENTFOLDERS = folder_qml
 
 # Additional import path used to resolve QML modules in Creator's code model
-QML_IMPORT_PATH =
+QML_IMPORT_PATH = src
 
 symbian:TARGET.UID3 = 0xEB54CF20
 
@@ -28,20 +28,20 @@ CONFIG += qdeclarative-boostable
 
 # Add dependency to Symbian components
 # CONFIG += qt-components
+VERSION = 0.0.1
+DEFINES += APP_VERSION=\\\"$$VERSION\\\"
 
 # The .cpp file which was generated for your project. Feel free to hack it.
 HEADERS += \
-    src/chat.h
+    src/chat.h \
+    src/message.h
 
 SOURCES += \
     src/main.cpp \
-    src/chat.cpp
+    src/chat.cpp \
+    src/message.cpp
 
-# Please do not modify the following two lines. Required for deployment.
-include(qmlapplicationviewer/qmlapplicationviewer.pri)
-qtcAddDeployment()
-
-TEMPLATE = subdirs
+TEMPLATE = app
 SUBDIRS = telegram-qt
 include(options.pri)
 
@@ -54,5 +54,6 @@ OTHER_FILES += \
     qtc_packaging/debian_harmattan/compat \
     qtc_packaging/debian_harmattan/changelog
 
-
-
+# Please do not modify the following two lines. Required for deployment.
+include(qmlapplicationviewer/qmlapplicationviewer.pri)
+qtcAddDeployment()
