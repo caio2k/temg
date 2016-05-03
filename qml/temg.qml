@@ -20,6 +20,9 @@ PageStackWindow {
   }
   function addChat(name, lastMessage){
       chatsModel.append({"name": name, "messages": [{"sender": name, "message": lastMessage}]})
+      //newMessage = new Message(new QString(name), new QString(lastMessage));
+      //newChat = new Chat();
+      //chatsModel.append(newChat);
   }
 
   Page{
@@ -119,13 +122,14 @@ PageStackWindow {
   ListModel{
       id: chatsModel
       //chatName: Chat.getName
-      ListElement{
-          name: "preload"
-          messages: [
-              ListElement { sender: "teste"; message: "Core" },
-              ListElement { sender: "teste"; message: "Deciduous" }
-                    ]
-      }
+      //ListElement{
+      //    name: "preload"
+      //    messages: [
+      //        ListElement { sender: "teste"; message: "Core" },
+      //        ListElement { sender: "teste"; message: "Deciduous" }
+      //              ]
+      //    chat: Chat { }
+      //}
   }
 
   Component{
@@ -141,7 +145,7 @@ PageStackWindow {
               //Text { text: "Messages:" }
               Repeater {
                   model: messages
-                  Text { text:  sender + ">" + message }
+                  Text { text:  sender + ">" + message +"\n" }
               }
           }
       }
