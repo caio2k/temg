@@ -136,17 +136,24 @@ PageStackWindow {
   Component{
       id:chatsDelegate
       Item {
-          width: 200
-          height: 50
-          Text { id: nameField; text: name }
-          //Text { text: '>' + messages; anchors.left: nameField.right }
+          width: parent.width
+          height: 100
+          Text {
+              id: nameField;
+              width:parent.width
+              color:"darkblue"
+              font.bold:true
+              text: name
+          }
           Row {
-              //anchors.top: nameField.bottom
-              //spacing: 5
-              //Text { text: "Messages:" }
+              anchors.top: nameField.bottom
               Repeater {
                   model: messages
-                  Text { text:  sender + ">" + content +"\n" }
+                  Text {
+///                      anchors.topMargin:20
+                      width:parent.width
+                      text:  sender + ">" + content
+                  }
               }
           }
       }
@@ -155,9 +162,9 @@ PageStackWindow {
       id: teste1
       name: "chat1"
       messages: [
-          Message { sender: "testador"; destiny: "you"; content: "bla"},
-          Message { sender: "testador"; destiny: "you"; content: "bla"},
-          Message { sender: "testador"; destiny: "you"; content: "bla"}
+          Message { sender: "testador1"; destiny: "you1"; content: "bla1"},
+          Message { sender: "testador2"; destiny: "you2"; content: "bla2"},
+          Message { sender: "testador3"; destiny: "you3"; content: "bla3"}
       ]
   }
 }
