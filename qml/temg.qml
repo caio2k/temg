@@ -18,9 +18,12 @@ PageStackWindow {
       messageDialog.message = message;
       messageDialog.open();
   }
-  function addChat(name, lastMessage){
-      chatsModel.append({"name": name, "messages": [{"sender": name, "message": lastMessage}]})
-      //newMessage = new Message(new QString(name), new QString(lastMessage));
+  function addChat(chat){
+      var component = Qt.createComponent(Chat);
+      var dynamicObject = component.createObject(parent);
+//      chatsModel.append({"name": chat.name, "messages": [{"sender": chat.name, "content": chat.messages}]})
+      chatsModel.append({"name": chat.name, "messages": chat.messages})
+      //newMessage = new Message(chat.name, chat.message);
       //newChat = new Chat();
       //chatsModel.append(newChat);
   }
@@ -82,7 +85,9 @@ PageStackWindow {
       }
       MenuItem {
         text: "Add mock message"
-        onClicked: rootWin.addChat("teste", "Testando...");
+        onClicked: {
+            rootWin.addChat(teste1)
+        }
       }
     }
   }
@@ -122,21 +127,17 @@ PageStackWindow {
   ListModel{
       id: chatsModel
       //chatName: Chat.getName
-      //ListElement{
-      //    name: "preload"
-      //    messages: [
-      //        ListElement { sender: "teste"; message: "Core" },
-      //        ListElement { sender: "teste"; message: "Deciduous" }
-      //              ]
-      //    chat: Chat { }
-      //}
+      ListElement{
+          name: "teste"
+          messages: [ ListElement{sender: "test"; content: "bla"} ]
+      }
   }
 
   Component{
       id:chatsDelegate
       Item {
           width: 200
-          height: 500
+          height: 50
           Text { id: nameField; text: name }
           //Text { text: '>' + messages; anchors.left: nameField.right }
           Row {
@@ -145,9 +146,16 @@ PageStackWindow {
               //Text { text: "Messages:" }
               Repeater {
                   model: messages
-                  Text { text:  sender + ">" + message +"\n" }
+                  Text { text:  sender + ">" + content +"\n" }
               }
           }
       }
+  }
+  Chat{
+      id: teste1
+      name: "chat1"
+      messages: [
+          Message { sender: "testador"; content: "bla"}
+      ]
   }
 }

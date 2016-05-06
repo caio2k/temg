@@ -1,31 +1,35 @@
 #include "chat.h"
 #include <QDeclarativeListProperty>
-
-Chat::Chat(QObject *parent, QString chatName) :
-    QObject(parent), chatName(QString("unamed"))
+#include <QDebug>
+Chat::Chat(QObject *parent, QString n) :
+    QObject(parent)
 {
+    chatName = n;
 }
 
 QString Chat::getName(){
     return chatName;
 }
 
-void Chat::setName(const QString &n){
+void Chat::setName(const QString& n){
     chatName = n;
 }
 
-//QDeclarativeListProperty<Message> *Chat::getMessages(){
-//    return &chatMessages;
-//}
-
-QDeclarativeListProperty<Message> Chat::messages(){
+QDeclarativeListProperty<Message> Chat::getMessages(){
      return QDeclarativeListProperty<Message>(this, chatMessages);
 }
+
+//QList<Message> Chat::getMessages(){
+//    return &chatMessages;
+//}
 
 //void Chat::setMessages(QList<Message> messages){
 //    chatMessages = QList<Message>(messages);
 //}
 
-//void Chat::appendMessage(const Message msg){
-//    chatMessages.append(msg);
-//}
+void Chat::appendMessage(Message& msg){
+    Message msgToAdd(msg.parent(),msg.getSender(),msg.getContent());
+    qWarning() << "Appending message" << msgToAdd.getContent();
+    chatMessages.append(&msgToAdd);
+}
+

@@ -6,6 +6,8 @@
 #include "chat.h"
 #include "message.h"
 
+#include <QDebug>
+
 Q_DECL_EXPORT int main(int argc, char *argv[])
 {
     QScopedPointer<QApplication> app(createApplication(argc, argv));
@@ -22,5 +24,25 @@ Q_DECL_EXPORT int main(int argc, char *argv[])
     viewer->setMainQmlFile(QLatin1String("qml/temg.qml"));
     viewer->showExpanded();
 
+    Chat *testchat = new Chat(0,"newname");
+    qWarning() << testchat->getName();
+    testchat->setName("oi");
+    qWarning() << testchat->getName();
+    Message *msg1 = new Message(0,"mandador1","olá, vou dominar o mundo");
+    Message msg2(0,"mandador2","o pinky");
+    testchat->appendMessage(*msg1);
+    testchat->appendMessage(msg2);
+   // testchat->appendMessage(new Message(0,"mandador3","e o cérebro"));
+    //QDeclarativeListProperty<Message> testlist = testchat->messages();
+    //qWarning() << testlist->count;
+    //for(int i=0;i < (int) &testlist->count();i++){
+    //    qWarning() << "oi " << i;
+    //}
+    //qWarning() << testchat->messages();
+
     return app->exec();
+    //delete msg3;
+    delete msg1;
+    delete testchat;
+
 }
