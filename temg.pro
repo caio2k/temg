@@ -34,12 +34,14 @@ DEFINES += APP_VERSION=\\\"$$VERSION\\\"
 # The .cpp file which was generated for your project. Feel free to hack it.
 HEADERS += \
     src/chat.h \
-    src/message.h
+    src/message.h \
+    src/listmodel.h
 
 SOURCES += \
     src/main.cpp \
     src/chat.cpp \
-    src/message.cpp
+    src/message.cpp \
+    src/listmodel.cpp
 
 TEMPLATE = app
 SUBDIRS = telegram-qt
@@ -57,3 +59,5 @@ OTHER_FILES += \
 # Please do not modify the following two lines. Required for deployment.
 include(qmlapplicationviewer/qmlapplicationviewer.pri)
 qtcAddDeployment()
+
+

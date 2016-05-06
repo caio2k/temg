@@ -28,8 +28,8 @@ QDeclarativeListProperty<Message> Chat::getMessages(){
 //}
 
 void Chat::appendMessage(Message& msg){
-    Message msgToAdd(msg.parent(),msg.getSender(),msg.getContent());
-    qWarning() << "Appending message" << msgToAdd.getContent();
+    Message msgToAdd(msg.sender(),msg.destiny(),msg.content());
+    qWarning() << "Appending message" << msgToAdd.content();
     chatMessages.append(&msgToAdd);
 }
 

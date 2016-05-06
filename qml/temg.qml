@@ -155,7 +155,9 @@ PageStackWindow {
       id: teste1
       name: "chat1"
       messages: [
-          Message { sender: "testador"; content: "bla"}
+          Message { sender: "testador"; destiny: "you"; content: "bla"},
+          Message { sender: "testador"; destiny: "you"; content: "bla"},
+          Message { sender: "testador"; destiny: "you"; content: "bla"}
       ]
   }
 }

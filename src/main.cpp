@@ -28,10 +28,10 @@ Q_DECL_EXPORT int main(int argc, char *argv[])
     qWarning() << testchat->getName();
     testchat->setName("oi");
     qWarning() << testchat->getName();
-    Message *msg1 = new Message(0,"mandador1","olá, vou dominar o mundo");
-    Message msg2(0,"mandador2","o pinky");
-    testchat->appendMessage(*msg1);
-    testchat->appendMessage(msg2);
+    //Message *msg1 = new Message("mandador1","destinador1","olá, vou dominar o mundo");
+    //Message msg2("mandador2", "destinador2","o pinky");
+    //testchat->appendMessage(*msg1);
+    //testchat->appendMessage(msg2);
    // testchat->appendMessage(new Message(0,"mandador3","e o cérebro"));
     //QDeclarativeListProperty<Message> testlist = testchat->messages();
     //qWarning() << testlist->count;
@@ -42,7 +42,7 @@ Q_DECL_EXPORT int main(int argc, char *argv[])
 
     return app->exec();
     //delete msg3;
-    delete msg1;
+    //delete msg1;
     delete testchat;
 
 }
