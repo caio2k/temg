@@ -24,6 +24,8 @@ public:
     QVariant data(int role) const;
 //    explicit Message(QObject *parent = 0, QString messageSender = NULL, QString messageContent = NULL);
     explicit Message(const QString&, const QString&, const QString&, QObject *parent = 0);
+
+    //getters and setters
     void setSender(const QString&);
     void setDestiny(const QString&);
     void setContent(const QString&);

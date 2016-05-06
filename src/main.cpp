@@ -24,10 +24,10 @@ Q_DECL_EXPORT int main(int argc, char *argv[])
     viewer->setMainQmlFile(QLatin1String("qml/temg.qml"));
     viewer->showExpanded();
 
-    Chat *testchat = new Chat(0,"newname");
-    qWarning() << testchat->getName();
+    Chat *testchat = new Chat("newname");
+    qWarning() << testchat->name();
     testchat->setName("oi");
-    qWarning() << testchat->getName();
+    qWarning() << testchat->name();
     //Message *msg1 = new Message("mandador1","destinador1","olá, vou dominar o mundo");
     //Message msg2("mandador2", "destinador2","o pinky");
     //testchat->appendMessage(*msg1);

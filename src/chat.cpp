@@ -1,22 +1,50 @@
 #include "chat.h"
-#include <QDeclarativeListProperty>
 #include <QDebug>
-Chat::Chat(QObject *parent, QString n) :
-    QObject(parent)
+
+Chat::Chat(const QString& name, QObject* parent) :
+    ListItem(parent), m_name(name)
 {
-    chatName = n;
 }
 
-QString Chat::getName(){
-    return chatName;
+//overwriting functions from ListItem
+QHash<int, QByteArray> Chat::roleNames() const
+{
+  QHash<int, QByteArray> names;
+  names[NameRole] = "name";
+//  names[MessagesRole] = "messages";
+  names[LastRole] = "lastMessage";
+  return names;
+}
+
+QVariant Chat::data(int role) const
+{
+  switch(role) {
+  case NameRole:
+    return name();
+  case LastRole:
+    return lastMessage();
+  default:
+    return QVariant();
+  }
+}
+
+void Chat::appendMessage(Message& msg){
+    Message msgToAdd(msg.sender(),msg.destiny(),msg.content());
+    qWarning() << "Appending message" << msgToAdd.content();
+    m_messages.append(&msgToAdd);
+}
+
+QString Chat::lastMessage() const{
+    return m_messages.last()->content();
+}
+
+//getters and setters
+QDeclarativeListProperty<Message> Chat::messages() {
+    return QDeclarativeListProperty<Message>(this, m_messages);
 }
 
 void Chat::setName(const QString& n){
-    chatName = n;
-}
-
-QDeclarativeListProperty<Message> Chat::getMessages(){
-     return QDeclarativeListProperty<Message>(this, chatMessages);
+    m_name = n;
 }
 
 //QList<Message> Chat::getMessages(){
@@ -27,9 +55,4 @@ QDeclarativeListProperty<Message> Chat::getMessages(){
 //    chatMessages = QList<Message>(messages);
 //}
 
-void Chat::appendMessage(Message& msg){
-    Message msgToAdd(msg.sender(),msg.destiny(),msg.content());
-    qWarning() << "Appending message" << msgToAdd.content();
-    chatMessages.append(&msgToAdd);
-}
 

@@ -5,29 +5,40 @@
 //#include <QList>
 #include <QDeclarativeListProperty>
 #include "message.h"
+#include "listmodel.h"
 
-class Chat : public QObject
+class Chat : public ListItem
 {
     Q_OBJECT
-    Q_PROPERTY(QString name READ getName WRITE setName)
-    Q_PROPERTY(QDeclarativeListProperty<Message> messages READ getMessages)
+    Q_PROPERTY(QString name READ name WRITE setName)
+    Q_PROPERTY(QDeclarativeListProperty<Message> messages READ messages)
 //    Q_PROPERTY(QString *chatMessages READ getMessages WRITE setMessages)
 
 public:
-    explicit Chat(QObject *parent = 0, QString chatName = QString("Unamed"));
+    enum Roles {
+        NameRole,
+        LastRole
+    };
 
-    // getters and setters
-    QString getName();
-    Q_INVOKABLE void setName(const QString&);
-    QDeclarativeListProperty<Message> getMessages();
-    //QList<Message> Chat::getMessages();
-    //void setMessages(QList<Message> messages);
-    //Q_INVOKABLE void appendMessage(Message &msg);
+    //overwritten methods
+    Chat(QObject *parent = 0): ListItem(parent) {}
+    explicit Chat(const QString&,QObject *parent = 0);
+    //abstract methods implementation
+    QHash<int, QByteArray> roleNames() const;
+    QVariant data(int role) const;
+    inline QString id() const { return m_name; }
+
+    Q_INVOKABLE QString lastMessage() const;
     Q_INVOKABLE void appendMessage(Message&);
 
-    QString chatName;
-    QList<Message *> chatMessages;
+    // getters and setters
+    inline QString name() const { return m_name; }
+    Q_INVOKABLE void setName(const QString&);
+    QDeclarativeListProperty<Message> messages();
+
 private:
+    QString m_name;
+    QList<Message *> m_messages;
 
 signals:
 
