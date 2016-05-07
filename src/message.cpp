@@ -1,7 +1,7 @@
 #include "message.h"
 
 Message::Message(const QString& sender, const QString& destiny, const QString& content, QObject *parent) :
-    ListItem(parent), m_sender(sender), m_destiny(destiny), m_content(content)
+    MyListItem(parent), m_sender(sender), m_destiny(destiny), m_content(content)
 {
 }
 

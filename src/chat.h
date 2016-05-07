@@ -7,7 +7,7 @@
 #include "message.h"
 #include "listmodel.h"
 
-class Chat : public ListItem
+class Chat : public MyListItem
 {
     Q_OBJECT
     Q_PROPERTY(QString name READ name WRITE setName)
@@ -21,8 +21,8 @@ public:
     };
 
     //overwritten methods
-    Chat(QObject *parent = 0): ListItem(parent) {}
-    explicit Chat(const QString&,QObject *parent = 0);
+    Chat(QObject* parent = 0) : MyListItem(parent) {}
+    explicit Chat(const QString&, QObject* parent = 0);
     //abstract methods implementation
     QHash<int, QByteArray> roleNames() const;
     QVariant data(int role) const;

@@ -19,10 +19,11 @@ PageStackWindow {
       messageDialog.open();
   }
   function addChat(chat){
-      var component = Qt.createComponent(Chat);
-      var dynamicObject = component.createObject(parent);
+//      var component = Qt.createComponent(Chat);
+//      var dynamicObject = component.createObject(parent);
 //      chatsModel.append({"name": chat.name, "messages": [{"sender": chat.name, "content": chat.messages}]})
-      chatsModel.append({"name": chat.name, "messages": chat.messages})
+    chatsModel2.appendRow(chat)
+////      chatsModel.append({"name": chat.name, "messages": chat.messages})
       //newMessage = new Message(chat.name, chat.message);
       //newChat = new Chat();
       //chatsModel.append(newChat);
@@ -40,7 +41,7 @@ PageStackWindow {
       ListView {
         id: chatsList
         delegate: chatsDelegate
-        model: chatsModel
+        model: chatsModel2
         anchors.fill: parent
 //        anchors.centerIn: parent
 //        width:parent.width
@@ -139,25 +140,31 @@ PageStackWindow {
           width: parent.width
           height: 100
           Text {
-              id: nameField;
-              width:parent.width
-              color:"darkblue"
-              font.bold:true
+              id: nameField
+              width: parent.width
+              color: "darkblue"
+              font.bold: true
               text: name
           }
-          Row {
+          Text {
+              id: lastField
               anchors.top: nameField.bottom
+              width: parent.width
+              text: lastMessage
+          }
+          /*Row {
+              anchors.top: lastField.bottom
               Repeater {
                   model: messages
                   Text {
-///                      anchors.topMargin:20
                       width:parent.width
                       text:  sender + ">" + content
                   }
               }
-          }
+          }*/
       }
   }
+
   Chat{
       id: teste1
       name: "chat1"

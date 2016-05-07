@@ -5,7 +5,7 @@
 #include <QAbstractListModel>
 #include "listmodel.h"
 
-class Message : public ListItem
+class Message : public MyListItem
 {
     Q_OBJECT
     Q_PROPERTY(QString sender READ sender WRITE setSender)
@@ -19,7 +19,7 @@ public:
         ContentRole
     };
 
-    Message(QObject *parent = 0): ListItem(parent) {}
+    Message(QObject *parent = 0): MyListItem(parent) {}
     QHash<int, QByteArray> roleNames() const;
     QVariant data(int role) const;
 //    explicit Message(QObject *parent = 0, QString messageSender = NULL, QString messageContent = NULL);

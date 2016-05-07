@@ -7,46 +7,46 @@
 
 #include "listmodel.h"
 
-ListModel::ListModel(ListItem* prototype, QObject *parent) :
+MyListModel::MyListModel(MyListItem* prototype, QObject *parent) :
     QAbstractListModel(parent), m_prototype(prototype)
 {
   setRoleNames(m_prototype->roleNames());
 }
 
-int ListModel::rowCount(const QModelIndex &parent) const
+int MyListModel::rowCount(const QModelIndex &parent) const
 {
   Q_UNUSED(parent);
   return m_list.size();
 }
 
-QVariant ListModel::data(const QModelIndex &index, int role) const
+QVariant MyListModel::data(const QModelIndex &index, int role) const
 {
   if(index.row() < 0 || index.row() >= m_list.size())
     return QVariant();
   return m_list.at(index.row())->data(role);
 }
 
-ListModel::~ListModel() {
+MyListModel::~MyListModel() {
   delete m_prototype;
   clear();
 }
 
-void ListModel::appendRow(ListItem *item)
+void MyListModel::appendRow(MyListItem *item)
 {
-  appendRows(QList<ListItem*>() << item);
+  appendRows(QList<MyListItem*>() << item);
 }
 
-void ListModel::appendRows(const QList<ListItem *> &items)
+void MyListModel::appendRows(const QList<MyListItem *> &items)
 {
   beginInsertRows(QModelIndex(), rowCount(), rowCount()+items.size()-1);
-  foreach(ListItem *item, items) {
+  foreach(MyListItem *item, items) {
     connect(item, SIGNAL(dataChanged()), SLOT(handleItemChange()));
     m_list.append(item);
   }
   endInsertRows();
 }
 
-void ListModel::insertRow(int row, ListItem *item)
+void MyListModel::insertRow(int row, MyListItem *item)
 {
   beginInsertRows(QModelIndex(), row, row);
   connect(item, SIGNAL(dataChanged()), SLOT(handleItemChange()));
@@ -54,23 +54,23 @@ void ListModel::insertRow(int row, ListItem *item)
   endInsertRows();
 }
 
-void ListModel::handleItemChange()
+void MyListModel::handleItemChange()
 {
-  ListItem* item = static_cast<ListItem*>(sender());
+  MyListItem* item = static_cast<MyListItem*>(sender());
   QModelIndex index = indexFromItem(item);
   if(index.isValid())
     emit dataChanged(index, index);
 }
 
-ListItem * ListModel::find(const QString &id)
+MyListItem * MyListModel::find(const QString &id)
 {
-  foreach(ListItem* item, m_list) {
+  foreach(MyListItem* item, m_list) {
     if(item->id() == id) return item;
   }
   return 0;
 }
 
-QModelIndex ListModel::indexFromItem(const ListItem *item) const
+QModelIndex MyListModel::indexFromItem(const MyListItem *item) const
 {
   Q_ASSERT(item);
   for(int row=0; row<m_list.size(); ++row) {
@@ -79,7 +79,7 @@ QModelIndex ListModel::indexFromItem(const ListItem *item) const
   return QModelIndex();
 }
 
-void ListModel::clear()
+void MyListModel::clear()
 {
   beginResetModel();
   qDeleteAll(m_list);
@@ -87,7 +87,7 @@ void ListModel::clear()
   endResetModel();
 }
 
-bool ListModel::removeRow(int row, const QModelIndex &parent)
+bool MyListModel::removeRow(int row, const QModelIndex &parent)
 {
   Q_UNUSED(parent);
   if(row < 0 || row >= m_list.size()) return false;
@@ -97,7 +97,7 @@ bool ListModel::removeRow(int row, const QModelIndex &parent)
   return true;
 }
 
-bool ListModel::removeRows(int row, int count, const QModelIndex &parent)
+bool MyListModel::removeRows(int row, int count, const QModelIndex &parent)
 {
   Q_UNUSED(parent);
   if(row < 0 || (row+count) >= m_list.size()) return false;
@@ -109,15 +109,15 @@ bool ListModel::removeRows(int row, int count, const QModelIndex &parent)
   return true;
 }
 
-ListItem * ListModel::takeRow(int row)
+MyListItem * MyListModel::takeRow(int row)
 {
   beginRemoveRows(QModelIndex(), row, row);
-  ListItem* item = m_list.takeAt(row);
+  MyListItem* item = m_list.takeAt(row);
   endRemoveRows();
   return item;
 }
 
-QHash<int, QByteArray> ListModel::roleNames() const
+QHash<int, QByteArray> MyListModel::roleNames() const
 {
     return m_prototype->roleNames();
 }

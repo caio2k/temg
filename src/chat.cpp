@@ -2,7 +2,7 @@
 #include <QDebug>
 
 Chat::Chat(const QString& name, QObject* parent) :
-    ListItem(parent), m_name(name)
+    MyListItem(parent), m_name(name)
 {
 }
 
@@ -35,11 +35,13 @@ void Chat::appendMessage(Message& msg){
 }
 
 QString Chat::lastMessage() const{
-    return m_messages.last()->content();
+    if(m_messages.size()>0)
+        return m_messages.last()->content();
+    return "empty";
 }
 
 //getters and setters
-QDeclarativeListProperty<Message> Chat::messages() {
+QDeclarativeListProperty<Message> Chat::messages()  {
     return QDeclarativeListProperty<Message>(this, m_messages);
 }
 
