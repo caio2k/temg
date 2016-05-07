@@ -29,7 +29,7 @@ public:
     inline QString id() const { return m_name; }
 
     Q_INVOKABLE QString lastMessage() const;
-    Q_INVOKABLE void appendMessage(Message&);
+    Q_INVOKABLE void appendMessage(Message*);
     Q_INVOKABLE void changeName(const QString&);
     // getters and setters
     inline QString name() const { return m_name; }

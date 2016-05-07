@@ -28,11 +28,11 @@ QVariant Chat::data(int role) const
   }
 }
 
-void Chat::appendMessage(Message& msg){
-    Message msgToAdd(msg.sender(),msg.destiny(),msg.content());
-    qWarning() << "Appending message" << msgToAdd.content();
-    m_messages.append(&msgToAdd);
-    emit dataChanged();
+void Chat::appendMessage(Message* msg){
+    //Message msgToAdd(msg.sender(),msg.destiny(),msg.content());
+    //qWarning() << "Appending message" << msgToAdd.content();
+    m_messages.append(msg);
+    //emit dataChanged();
 }
 
 QString Chat::lastMessage() const{

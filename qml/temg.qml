@@ -10,7 +10,7 @@ PageStackWindow {
   showToolBar: true
 
   Component.onCompleted: {
-    //theme.inverted = !theme.inverted
+    theme.inverted = !theme.inverted
   }
 
   function showMessage(title, message) {
@@ -142,7 +142,7 @@ PageStackWindow {
           Text {
               id: nameField
               width: parent.width
-              color: "darkblue"
+              color: "lightblue"
               font.bold: true
               text: name
           }
@@ -150,6 +150,7 @@ PageStackWindow {
               id: lastField
               anchors.top: nameField.bottom
               width: parent.width
+              color: "lightgray"
               text: lastMessage
           }
           /*Row {

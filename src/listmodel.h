@@ -40,7 +40,7 @@ public:
 private slots:
   void handleItemChange();
 
-private:
+protected:
   MyListItem* m_prototype;
   QList<MyListItem*> m_list;
 };
