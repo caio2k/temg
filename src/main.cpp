@@ -51,8 +51,6 @@ Q_DECL_EXPORT int main(int argc, char *argv[])
     app->setOrganizationName("temg");
     app->setApplicationVersion(APP_VERSION);
 
-    viewer->setOrientation(QmlApplicationViewer::ScreenOrientationAuto);
-    viewer->setMainQmlFile(QLatin1String("qml/temg.qml"));
 
     //temg: mock model creation
     Feed* chatsModel = createModel(viewer->parent());
@@ -74,10 +72,16 @@ Q_DECL_EXPORT int main(int argc, char *argv[])
     appInfo.setOsInfo(QLatin1String("GNU/Linux"));
     appInfo.setLanguageCode(QLatin1String("en"));
 
-    //CTelegramCore* m_core2=new CTelegramCore(viewer->parent()),
-    //m_core2->setAppInformation(&appInfo);
-    //m_core2->setAutoReconnection(true);
+    //telegram-qt: implementing signal
+//    connect(m_core, SIGNAL(connectionStateChanged(TelegramNamespace::ConnectionState)),
+//            SLOT(whenConnectionStateChanged(TelegramNamespace::ConnectionState)));
 
+    CTelegramCore* m_core2=new CTelegramCore(viewer->parent());
+    m_core2->setAppInformation(&appInfo);
+    m_core2->setAutoReconnection(true);
+
+    viewer->setOrientation(QmlApplicationViewer::ScreenOrientationAuto);
+    viewer->setMainQmlFile(QLatin1String("qml/temg.qml"));
     return app->exec();
 
 

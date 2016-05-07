@@ -22,7 +22,7 @@ PageStackWindow {
 //      var component = Qt.createComponent(Chat);
 //      var dynamicObject = component.createObject(parent);
 //      chatsModel.append({"name": chat.name, "messages": [{"sender": chat.name, "content": chat.messages}]})
-    chatsModel2.appendRow(chat)
+    chatsModel.appendRow(chat)
 ////      chatsModel.append({"name": chat.name, "messages": chat.messages})
       //newMessage = new Message(chat.name, chat.message);
       //newChat = new Chat();
