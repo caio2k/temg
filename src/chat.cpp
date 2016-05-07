@@ -32,6 +32,7 @@ void Chat::appendMessage(Message& msg){
     Message msgToAdd(msg.sender(),msg.destiny(),msg.content());
     qWarning() << "Appending message" << msgToAdd.content();
     m_messages.append(&msgToAdd);
+    emit dataChanged();
 }
 
 QString Chat::lastMessage() const{
@@ -45,8 +46,9 @@ QDeclarativeListProperty<Message> Chat::messages()  {
     return QDeclarativeListProperty<Message>(this, m_messages);
 }
 
-void Chat::setName(const QString& n){
+void Chat::changeName(const QString& n){
     m_name = n;
+    emit dataChanged();
 }
 
 //QList<Message> Chat::getMessages(){

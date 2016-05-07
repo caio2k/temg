@@ -41,7 +41,7 @@ Q_DECL_EXPORT int main(int argc, char *argv[])
 
     Chat *testchat = new Chat("newname");
     qWarning() << testchat->name();
-    testchat->setName("oi");
+    testchat->changeName("oi");
     qWarning() << testchat->name();
     //Message *msg1 = new Message("mandador1","destinador1","olá, vou dominar o mundo");
     //Message msg2("mandador2", "destinador2","o pinky");

@@ -10,7 +10,7 @@
 class Chat : public MyListItem
 {
     Q_OBJECT
-    Q_PROPERTY(QString name READ name WRITE setName)
+    Q_PROPERTY(QString name READ name WRITE changeName)
     Q_PROPERTY(QDeclarativeListProperty<Message> messages READ messages)
 //    Q_PROPERTY(QString *chatMessages READ getMessages WRITE setMessages)
 
@@ -30,10 +30,9 @@ public:
 
     Q_INVOKABLE QString lastMessage() const;
     Q_INVOKABLE void appendMessage(Message&);
-
+    Q_INVOKABLE void changeName(const QString&);
     // getters and setters
     inline QString name() const { return m_name; }
-    Q_INVOKABLE void setName(const QString&);
     QDeclarativeListProperty<Message> messages();
 
 private:
@@ -41,6 +40,7 @@ private:
     QList<Message *> m_messages;
 
 signals:
+
 
 public slots:
 
