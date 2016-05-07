@@ -29,10 +29,9 @@ QVariant Chat::data(int role) const
 }
 
 void Chat::appendMessage(Message* msg){
-    //Message msgToAdd(msg.sender(),msg.destiny(),msg.content());
-    //qWarning() << "Appending message" << msgToAdd.content();
+    //check if id already exists. if this is the case, just update
     m_messages.append(msg);
-    //emit dataChanged();
+    //if timestamp doesn't exists, update it with QDateTime::currentMSecsSinceEpoch() / 1000;
 }
 
 QString Chat::lastMessage() const{
@@ -51,12 +50,7 @@ void Chat::changeName(const QString& n){
     emit dataChanged();
 }
 
-//QList<Message> Chat::getMessages(){
-//    return &chatMessages;
-//}
-
-//void Chat::setMessages(QList<Message> messages){
-//    chatMessages = QList<Message>(messages);
-//}
+//setMessageMediaData
+//setMessageDeliveryStatus
 
 

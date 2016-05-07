@@ -45,8 +45,12 @@ SOURCES += \
     src/message.cpp \
     src/feed.cpp
 
+INCLUDEPATH += telegram-qt
+
 TEMPLATE = app
+TARGET = temg
 SUBDIRS = telegram-qt
+
 include(options.pri)
 
 OTHER_FILES += \
@@ -58,10 +62,16 @@ OTHER_FILES += \
     qtc_packaging/debian_harmattan/compat \
     qtc_packaging/debian_harmattan/changelog
 
-# Please do not modify the following two lines. Required for deployment.
+
+# QT: Please do not modify the following two lines. Required for deployment.
 include(qmlapplicationviewer/qmlapplicationviewer.pri)
 qtcAddDeployment()
 
+# library telegram-qt
+win32:CONFIG(release, debug|release): LIBS += -L$$OUT_PWD/telegram-qt/release/ -lTelegramQt
+else:win32:CONFIG(debug, debug|release): LIBS += -L$$OUT_PWD/telegram-qt/debug/ -lTelegramQt
+else:symbian: LIBS += -lTelegramQt
+else:unix: LIBS += -L$$OUT_PWD/telegram-qt/ -lTelegramQt
 
-
-
+INCLUDEPATH += $$PWD/telegram-qt
+DEPENDPATH += $$PWD/telegram-qt

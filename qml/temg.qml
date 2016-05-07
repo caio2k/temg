@@ -41,7 +41,7 @@ PageStackWindow {
       ListView {
         id: chatsList
         delegate: chatsDelegate
-        model: chatsModel2
+        model: chatsModel
         anchors.fill: parent
 //        anchors.centerIn: parent
 //        width:parent.width
@@ -126,7 +126,7 @@ PageStackWindow {
   }
 
   ListModel{
-      id: chatsModel
+      id: chatsModelOld
       //chatName: Chat.getName
       ListElement{
           name: "teste"
