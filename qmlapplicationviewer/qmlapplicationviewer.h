@@ -37,7 +37,7 @@ public:
 
     void showExpanded();
 
-private:
+protected:
     explicit QmlApplicationViewer(QDeclarativeView *view, QWidget *parent);
     class QmlApplicationViewerPrivate *d;
 };

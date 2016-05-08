@@ -36,14 +36,16 @@ HEADERS += \
     src/listmodel.h \
     src/chat.h \
     src/message.h \
-    src/feed.h
+    src/feed.h \
+    src/temg.h
 
 SOURCES += \
     src/main.cpp \
     src/listmodel.cpp \
     src/chat.cpp \
     src/message.cpp \
-    src/feed.cpp
+    src/feed.cpp \
+    src/temg.cpp
 
 INCLUDEPATH += telegram-qt
 
@@ -75,3 +77,5 @@ else:unix: LIBS += -L$$OUT_PWD/telegram-qt/ -lTelegramQt
 
 INCLUDEPATH += $$PWD/telegram-qt
 DEPENDPATH += $$PWD/telegram-qt
+
+

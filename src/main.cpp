@@ -3,13 +3,14 @@
 #include <QtDeclarative/QDeclarativeContext>
 #include <QtDeclarative/QDeclarativeEngine>
 #include <QtDeclarative/qdeclarative.h>
-#include "qmlapplicationviewer.h"
+//#include "qmlapplicationviewer.h"
 
 //temg classes
 #include "chat.h"
 #include "message.h"
 #include "listmodel.h"
 #include "feed.h"
+#include "temg.h"
 
 //telegram-qt classes
 #include "telegram-qt/CTelegramCore.hpp"
@@ -39,7 +40,9 @@ Q_DECL_EXPORT int main(int argc, char *argv[])
 {
     //QT
     QScopedPointer<QApplication> app(createApplication(argc, argv));
-    QScopedPointer<QmlApplicationViewer> viewer(QmlApplicationViewer::create());
+    QScopedPointer<TEMG> viewer(TEMG::create());
+
+    viewer->initialize();
 
     //temg: making classes available in QML
     qmlRegisterType<Chat>("Temg.Core", 1,0, "Chat");
@@ -62,23 +65,6 @@ Q_DECL_EXPORT int main(int argc, char *argv[])
     qWarning() << testchat->name();
     chatsModel->appendRow(testchat);
 
-    //telegram-qt: setting initial values
-    CAppInformation appInfo;
-    ///todo: get an app hash and id
-    appInfo.setAppId(14617);
-    appInfo.setAppHash(QLatin1String("e17ac360fd072f83d5d08db45ce9a121"));
-    appInfo.setAppVersion(QLatin1String("0.1"));
-    appInfo.setDeviceInfo(QLatin1String("pc"));
-    appInfo.setOsInfo(QLatin1String("GNU/Linux"));
-    appInfo.setLanguageCode(QLatin1String("en"));
-
-    //telegram-qt: implementing signal
-//    connect(m_core, SIGNAL(connectionStateChanged(TelegramNamespace::ConnectionState)),
-//            SLOT(whenConnectionStateChanged(TelegramNamespace::ConnectionState)));
-
-    CTelegramCore* m_core2=new CTelegramCore(viewer->parent());
-    m_core2->setAppInformation(&appInfo);
-    m_core2->setAutoReconnection(true);
 
     viewer->setOrientation(QmlApplicationViewer::ScreenOrientationAuto);
     viewer->setMainQmlFile(QLatin1String("qml/temg.qml"));
