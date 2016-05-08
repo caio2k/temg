@@ -10,7 +10,8 @@ PageStackWindow {
   showToolBar: true
 
   Component.onCompleted: {
-    theme.inverted = !theme.inverted
+      theme.inverted = !theme.inverted
+      console.log("The chart has been cleared ",statusIcon.icon)
   }
 
   function showMessage(title, message) {
@@ -28,6 +29,7 @@ PageStackWindow {
       //newChat = new Chat();
       //chatsModel.append(newChat);
   }
+  //Component.onChangeStatusIcon: {console.log("The chart has been cleared")}
 
   Page{
     id: mainPage
@@ -98,8 +100,8 @@ PageStackWindow {
     visible: true
 
     ToolItem {
-      id: backIcon
-      iconId: "icon-m-toolbar-back-white";
+      objectName: statusIcon
+      iconId: statusIcon.icon
     }
     ButtonRow {
       TabButton {

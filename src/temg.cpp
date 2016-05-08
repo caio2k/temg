@@ -1,12 +1,10 @@
 #include "temg.h"
-
+#include "statusicon.h"
 TEMG::TEMG(QWidget *parent) :
-    QmlApplicationViewer(parent)
+    QmlApplicationViewer(parent),
+    m_feedModel(new Feed(parent)),
+    m_statusIcon(new StatusIcon())
 {
-    initialize();
-}
-
-void TEMG::initialize(){
     //telegram-qt: setting initial values
     m_core=new CTelegramCore(this);
     CAppInformation appInfo;
@@ -38,12 +36,66 @@ void TEMG::initialize(){
     else{
         qWarning() << "secret: NOT loading file, please proceed to registration";
     }
+    //setStatusIcon("");
+    //statusIcon = new QString("");
+    setOrientation(QmlApplicationViewer::ScreenOrientationAuto);
+}
+
+void TEMG::loadQML(){
+
+    rootContext()->setContextProperty("chatsModel", m_feedModel);
+    rootContext()->setContextProperty("statusIcon", m_statusIcon);
+    setMainQmlFile(QLatin1String("qml/temg.qml"));
+    Chat *testchat = new Chat("newname");
+    qWarning() << testchat->name();
+    testchat->changeName("oi");
+    qWarning() << testchat->name();
+    m_feedModel->appendRow(testchat);
+
+    //conneting signals
+
+    //QGraphicsObject * qgo = rootObject();
+    //QObject* si = rootObject();
+    /*
+    StatusIcon* si = rootObject()->findChild<StatusIcon*>();
+    qWarning() << si;
+    if(si){
+        connectStatusIcon(si);
+        qWarning() << "conectou";
+    }
+    else
+        qWarning() << "non conectou";
+*/
+}
+
+void TEMG::createMockChats(){
+    Chat* chat1 = new Chat("chat1");
+    m_feedModel->appendRow(chat1);
+    Message* msg1 = new Message("oia1","oib1","oic1");
+    Message* msg2 = new Message("oia1","oib2","oic2");
+    Message* msg3 = new Message("oia3","oib3","oic3");
+    Message* msg4 = new Message("oia4","oib4","oic4");
+    chat1->appendMessage(msg1);
+    chat1->appendMessage(msg2);
+    chat1->appendMessage(msg1);
+    m_feedModel->appendRow(new Chat("chat2", m_feedModel));
+    m_feedModel->appendMessage(1,msg3);
+    m_feedModel->appendRow(new Chat("chat3", m_feedModel));
+    m_feedModel->appendMessage("chat3",msg4);
 }
 
 //QT
-TEMG* TEMG::create(){
-    return static_cast<TEMG*>(QmlApplicationViewer::create());
+TEMG* TEMG::create()
+{
+#ifdef HARMATTAN_BOOSTER
+    return new TEMG(MDeclarativeCache::qDeclarativeView(), 0);
+#else
+    return new TEMG();
+#endif
 }
+
+//temg signal handling
+
 
 //telegram-qt signal
 void TEMG::whenConnectionStateChanged(TelegramNamespace::ConnectionState state)
@@ -123,7 +175,8 @@ void TEMG::whenAuthSignErrorReceived(TelegramNamespace::AuthSignError errorCode,
 }
 
 //telegram-qt handlers
-void TEMG::setAppState(TEMG::AppState newState){
+void TEMG::setAppState(AppState newState){
     qWarning() << "changing state " << m_appState << " to " << newState;
     m_appState = newState;
+    m_statusIcon->changeStatusIcon(newState);
 }

@@ -5,11 +5,19 @@
 #include "qmlapplicationviewer.h"
 #include <QFile>
 #include <QIODevice>
+#include <QDeclarativeContext>
+#include <QDeclarativeView>
+#include <QGraphicsObject>
 
 //telegram-qt
 #include "telegram-qt/CTelegramCore.hpp"
 #include "telegram-qt/CAppInformation.hpp"
 #include "telegram-qt/TelegramNamespace.hpp"
+
+//temg
+#include "feed.h"
+#include "statusicon.h"
+#include "enum.h"
 
 #include <QDebug>
 
@@ -22,19 +30,11 @@ public:
 
     //overwriting create from QmlApplicationViewer
     static TEMG* create();
-    void initialize();
 
-    enum AppState {
-        AppStateNone,
-        AppStateConnected,
-        AppStateCodeRequired,
-        AppStateCodeRequested,
-        AppStateCodeSent,
-        AppStateSignedIn,
-        AppStateReady,
-        AppStateLoggedOut,
-        AppStateDisconnected
-    };
+
+
+    void loadQML();
+    void createMockChats();
 
 protected slots:
     void whenConnectionStateChanged(TelegramNamespace::ConnectionState);
@@ -43,8 +43,10 @@ protected slots:
     void whenPhoneCodeRequested();
     void whenAuthSignErrorReceived(TelegramNamespace::AuthSignError,const QString&);
 
+signals:
+
 private:
-    void setAppState(TEMG::AppState);
+    void setAppState(AppState);
 
     quint32 m_activeChatId;
     bool m_chatCreationMode;
@@ -56,6 +58,10 @@ private:
     AppState m_appState;
 
 
+
+    //temg
+    Feed* m_feedModel;
+    StatusIcon* m_statusIcon;
 };
 
 
