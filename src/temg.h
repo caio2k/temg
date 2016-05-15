@@ -28,11 +28,10 @@ class TEMG : public QmlApplicationViewer
 
 public:
     TEMG(QWidget *parent = 0);
+    TEMG(QDeclarativeView *view, QWidget *parent);
 
     //overwriting create from QmlApplicationViewer
     static TEMG* create();
-
-
 
     void loadQML();
     void createMockChats();

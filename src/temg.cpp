@@ -1,5 +1,9 @@
 #include "temg.h"
 
+#ifdef HARMATTAN_BOOSTER
+#include <MDeclarativeCache>
+#endif
+
 TEMG::TEMG(QWidget *parent) :
     QmlApplicationViewer(parent),
     m_feedModel(new Feed(parent)),
@@ -11,7 +15,7 @@ TEMG::TEMG(QWidget *parent) :
     CAppInformation appInfo;
     ///todo: get an app hash and id
     appInfo.setAppId(20904);
-    appInfo.setAppHash(QLatin1String(""));
+    appInfo.setAppHash(QLatin1String("50af64db4d215d1527881e45b39b7e21"));
     appInfo.setAppVersion(QLatin1String("0.1"));
     appInfo.setDeviceInfo(QLatin1String("pc"));
     appInfo.setOsInfo(QLatin1String("GNU/Linux"));
@@ -65,6 +69,12 @@ TEMG::TEMG(QWidget *parent) :
     //setStatusIcon("");
     //statusIcon = new QString("");
     setOrientation(QmlApplicationViewer::ScreenOrientationAuto);
+}
+
+TEMG::TEMG(QDeclarativeView *view, QWidget *parent)
+    : QmlApplicationViewer(view,parent)
+{
+
 }
 
 void TEMG::loadQML(){
