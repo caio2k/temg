@@ -9,6 +9,9 @@ PageStackWindow {
   showStatusBar: true
   showToolBar: true
 
+  signal registerGetCode(string msg)
+  signal registerSign(string msg, string code, string name, string surname)
+
   Component.onCompleted: {
       theme.inverted = !theme.inverted
       console.log("The chart has been cleared ",statusIcon.icon)
@@ -17,19 +20,23 @@ PageStackWindow {
   function showMessage(title, message) {
       messageDialog.titleText = title;
       messageDialog.message = message;
+//      messageDialog.rejectButtonText = "logoff";
       messageDialog.open();
   }
-  function addChat(chat){
-//      var component = Qt.createComponent(Chat);
-//      var dynamicObject = component.createObject(parent);
-//      chatsModel.append({"name": chat.name, "messages": [{"sender": chat.name, "content": chat.messages}]})
-    chatsModel.appendRow(chat)
-////      chatsModel.append({"name": chat.name, "messages": chat.messages})
-      //newMessage = new Message(chat.name, chat.message);
-      //newChat = new Chat();
-      //chatsModel.append(newChat);
+  function gotoRegister(){
+      pageStack.push(registerPage);
   }
-  //Component.onChangeStatusIcon: {console.log("The chart has been cleared")}
+  function requestRegisterGetCode(){
+      //registerSignIn.enable = true;
+      //registerCode.enable = true;
+      registerGetCode(registerPhoneNumber.text)
+  }
+  function requestRegisterSign(){
+      //registerSignIn.enable = true;
+      //registerCode.enable = true;
+      registerSign(registerPhoneNumber.text, registerCode.text, registerName.text, registerSurname.text)
+  }
+
 
   Page{
     id: mainPage
@@ -45,12 +52,6 @@ PageStackWindow {
         delegate: chatsDelegate
         model: chatsModel
         anchors.fill: parent
-//        anchors.centerIn: parent
-//        width:parent.width
-//        height:parent.height-wa_notifier.height
-//        spacing: 1
-//        clip:true
-//        cacheBuffer: 10000
       }
     }
 
@@ -74,23 +75,23 @@ PageStackWindow {
     id: mainMenu
     //visualParent: pageStack
     content: MenuLayout {
+      //MenuItem {
+      //  text: "Refresh"
+      //  onClicked: rootWin.refresh();
+      //}
       MenuItem {
-        text: "Refresh"
-        //onClicked: rootWin.refresh();
-      }
-      MenuItem {
-        text: "About"
-        onClicked: rootWin.showMessage("temg - temeelegram", "Author: Caio Tsumura (caio2k@gmail.com)\n\nLicense: GPL 3.0 or later\n\nFeel free to follow me, @caio2k")
+        text: "Launch registration"
+        onClicked: {
+            rootWin.gotoRegister()
+        }
       }
       MenuItem {
         text: "Privacy Policy"
         onClicked: rootWin.showMessage("Privacy Policy", "This application stores no information.");
       }
       MenuItem {
-        text: "Add mock message"
-        onClicked: {
-            rootWin.addChat(teste1)
-        }
+         text: "About"
+        onClicked: rootWin.showMessage("temg - temeelegram", "Author: Caio Tsumura (caio2k@gmail.com)\n\nLicense: GPL 3.0 or later\n\nFeel free to follow me, @caio2k")
       }
     }
   }
@@ -124,16 +125,7 @@ PageStackWindow {
 
   QueryDialog {
       id: messageDialog;
-      acceptButtonText: "Ok";
-  }
-
-  ListModel{
-      id: chatsModelOld
-      //chatName: Chat.getName
-      ListElement{
-          name: "teste"
-          messages: [ ListElement{sender: "test"; content: "bla"} ]
-      }
+      acceptButtonText: "Ok"
   }
 
   Component{
@@ -172,9 +164,67 @@ PageStackWindow {
       id: teste1
       name: "chat1"
       messages: [
-          Message { sender: "testador1"; destiny: "you1"; content: "bla1"},
-          Message { sender: "testador2"; destiny: "you2"; content: "bla2"},
-          Message { sender: "testador3"; destiny: "you3"; content: "bla3"}
+          Message { peer: "testador1"; contact: "you1"; text: "bla1"},
+          Message { peer: "testador2"; contact: "you2"; text: "bla2"},
+          Message { peer: "testador3"; contact: "you3"; text: "bla3"}
       ]
+  }
+  Page{
+    id: registerPage
+    tools: registerTool
+    Column {
+        id: registerColumn
+        spacing: 5
+        width: parent.width
+
+        TextField {
+            id: registerPhoneNumber
+            placeholderText: "Phone number without +"
+            width: 400
+            inputMethodHints: Qt.ImhDigitsOnly
+        }
+        Button {
+            id: registerCodeButton
+            text: "Insert Code"
+            onClicked: rootWin.requestRegisterGetCode()
+        }
+        TextField {
+            id: registerName
+            //enabled: false
+            placeholderText: "your name"
+            width: 300
+        }
+        TextField {
+            id: registerSurname
+            //enabled: false
+            placeholderText: "your last name"
+            width: 300
+        }
+        TextField {
+            id: registerCode
+            //enabled: false
+            placeholderText: "received code"
+            width: 200
+            inputMethodHints: Qt.ImhDigitsOnly
+        }
+        Button {
+            id: registerSignUpButton
+            //enabled: false
+            text: "Insert Code"
+            onClicked: rootWin.requestRegisterSign()
+        }
+    }
+  }
+  ToolBarLayout {
+    id: registerTool
+    visible: false
+
+    ToolItem {
+       id: backIcon
+       iconId: "icon-m-toolbar-back-white";
+       onClicked: {
+         pageStack.pop();
+       }
+    }
   }
 }

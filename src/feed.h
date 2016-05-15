@@ -13,8 +13,9 @@ public:
     explicit Feed(QObject* parent = 0);
     Feed(Chat* c, QObject* parent = 0);
 
-    void appendMessage(int idx, Message*);
-    void appendMessage(const QString&, Message*);
+    void appendMessage(const TelegramNamespace::Message&);
+    void appendMessage(int idx, const TelegramNamespace::Message &);
+    void appendMessage(const QString&, const TelegramNamespace::Message &);
 
 private:
 

@@ -7,6 +7,8 @@
 #include "message.h"
 #include "listmodel.h"
 
+#include "CTelegramCore.hpp"
+
 class Chat : public MyListItem
 {
     Q_OBJECT
@@ -19,6 +21,18 @@ public:
         NameRole,
         LastRole
     };
+    enum Columns {
+        Peer,
+        Contact,
+        Direction,
+        Timestamp,
+        MessageId,
+        MessageContent,
+        Status,
+        ForwardFromContact,
+        ForwardTimestamp,
+        ColumnsCount
+    };
 
     //overwritten methods
     Chat(QObject* parent = 0) : MyListItem(parent) {}
@@ -29,11 +43,15 @@ public:
     inline QString id() const { return m_name; }
 
     Q_INVOKABLE QString lastMessage() const;
+    Q_INVOKABLE void appendMessage(const TelegramNamespace::Message&);
     Q_INVOKABLE void appendMessage(Message*);
     Q_INVOKABLE void changeName(const QString&);
     // getters and setters
     inline QString name() const { return m_name; }
     QDeclarativeListProperty<Message> messages();
+
+    // inspired by telegram-qt
+    QVariant headerData(int, Qt::Orientation, int role) const;
 
 private:
     QString m_name;

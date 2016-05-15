@@ -17,6 +17,7 @@
 //temg
 #include "feed.h"
 #include "statusicon.h"
+//#include "register.h"
 #include "enum.h"
 
 #include <QDebug>
@@ -39,9 +40,12 @@ public:
 protected slots:
     void whenConnectionStateChanged(TelegramNamespace::ConnectionState);
     void whenLoggedOut(bool result);
-    void whenPhoneStatusReceived(const QString &phone, bool registered, bool invited);
-    void whenPhoneCodeRequested();
+    void whenPhoneStatusReceived(const QString& phone, bool registered, bool invited);
     void whenAuthSignErrorReceived(TelegramNamespace::AuthSignError,const QString&);
+    void whenPhoneCodeRequested();
+    void whenMessageReceived(const TelegramNamespace::Message &message);
+    void whenRegisterGetCode(const QString& number);
+    void whenRegisterSign(const QString& number, const QString& code, const QString& name, const QString& surname);
 
 signals:
 
@@ -62,6 +66,7 @@ private:
     //temg
     Feed* m_feedModel;
     StatusIcon* m_statusIcon;
+    //Register* m_register;
 };
 
 

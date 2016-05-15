@@ -1,37 +1,63 @@
 #include "temg.h"
-#include "statusicon.h"
+
 TEMG::TEMG(QWidget *parent) :
     QmlApplicationViewer(parent),
     m_feedModel(new Feed(parent)),
     m_statusIcon(new StatusIcon())
+    //m_register(new Register())
 {
     //telegram-qt: setting initial values
     m_core=new CTelegramCore(this);
     CAppInformation appInfo;
     ///todo: get an app hash and id
-    appInfo.setAppId(14617);
-    appInfo.setAppHash(QLatin1String("e17ac360fd072f83d5d08db45ce9a121"));
+    appInfo.setAppId(20904);
+    appInfo.setAppHash(QLatin1String(""));
     appInfo.setAppVersion(QLatin1String("0.1"));
     appInfo.setDeviceInfo(QLatin1String("pc"));
     appInfo.setOsInfo(QLatin1String("GNU/Linux"));
     appInfo.setLanguageCode(QLatin1String("en"));
 
     //telegram-qt: implementing signal
-    connect(m_core, SIGNAL(connectionStateChanged(TelegramNamespace::ConnectionState)),
-            SLOT(whenConnectionStateChanged(TelegramNamespace::ConnectionState)));
-    connect(m_core, SIGNAL(authSignErrorReceived(TelegramNamespace::AuthSignError,QString)),
-            SLOT(whenAuthSignErrorReceived(TelegramNamespace::AuthSignError,QString)));
+    ////connection status
+    connect(m_core, SIGNAL(connectionStateChanged(TelegramNamespace::ConnectionState)), SLOT(whenConnectionStateChanged(TelegramNamespace::ConnectionState)));
+    connect(m_core, SIGNAL(authSignErrorReceived(TelegramNamespace::AuthSignError,QString)), SLOT(whenAuthSignErrorReceived(TelegramNamespace::AuthSignError,QString)));
+    connect(m_core, SIGNAL(loggedOut()), SIGNAL(whenLoggedOut()));
+    connect(m_core, SIGNAL(phoneStatusReceived(const QString, bool, bool)), SIGNAL(whenPhoneStatusReceived(const QString, bool, bool)));
+
+    ////register
+    connect(m_core, SIGNAL(phoneCodeRequested()), SIGNAL(whenPhoneCodeRequested()));
+
+    ////message
+    connect(m_core, SIGNAL(messageReceived(TelegramNamespace::Message)), SLOT(whenMessageReceived(TelegramNamespace::Message)));
+
+//m_core->connectionSecretInfo().toHex()
 
     m_core->setAppInformation(&appInfo);
     m_core->setAutoReconnection(true);
     setAppState(AppStateNone);
+
+
+    TelegramNamespace::MessageFlags flags = TelegramNamespace::MessageFlagNone;
+    m_core->setMessageReceivingFilter(flags);
+//    m_core->setAcceptableMessageTypes(TelegramNamespace::MessageTypeText|TelegramNamespace::MessageTypePhoto|TelegramNamespace::MessageTypeGeo);
+    m_core->setAcceptableMessageTypes(TelegramNamespace::MessageTypeText);
+
+
+    //start connection to telegram server
+    QVector<TelegramNamespace::DcOption> prodServers;
+    prodServers << TelegramNamespace::DcOption(QLatin1String("149.154.167.50"), 443);
+    QVector<TelegramNamespace::DcOption> testServers;
+    testServers << TelegramNamespace::DcOption(QLatin1String("149.154.167.40"), 443);
+
+//    m_core->initConnection(prodServers);
+    m_core->initConnection(testServers);
 
     //load secret file if it exists
     QFile file("/home/caio/secret.temg");
     if(file.open(QIODevice::ReadOnly)) {
         qWarning() << "secret: loading file";
         QByteArray secretInfo = QByteArray::fromHex(file.readAll());
-        m_core->restoreConnection(secretInfo);
+     //   m_core->restoreConnection(secretInfo);
     }
     else{
         qWarning() << "secret: NOT loading file, please proceed to registration";
@@ -52,7 +78,9 @@ void TEMG::loadQML(){
     qWarning() << testchat->name();
     m_feedModel->appendRow(testchat);
 
-    //conneting signals
+    //qml signals
+    QObject::connect(this->rootObject(), SIGNAL(registerGetCode(QString)), SLOT(whenRegisterGetCode(QString)));
+    QObject::connect(this->rootObject(), SIGNAL(registerSign(QString,QString,QString,QString)), SLOT(whenRegisterSign(QString,QString,QString,QString)));
 
     //QGraphicsObject * qgo = rootObject();
     //QObject* si = rootObject();
@@ -69,19 +97,24 @@ void TEMG::loadQML(){
 }
 
 void TEMG::createMockChats(){
-    Chat* chat1 = new Chat("chat1");
+    Chat* chat1 = new Chat("1111");
     m_feedModel->appendRow(chat1);
-    Message* msg1 = new Message("oia1","oib1","oic1");
-    Message* msg2 = new Message("oia1","oib2","oic2");
-    Message* msg3 = new Message("oia3","oib3","oic3");
-    Message* msg4 = new Message("oia4","oib4","oic4");
+    TelegramNamespace::Message msg1 = TelegramNamespace::Message();
+    TelegramNamespace::Message msg2 = TelegramNamespace::Message();
+    TelegramNamespace::Message msg3 = TelegramNamespace::Message();
+    TelegramNamespace::Message msg4 = TelegramNamespace::Message();
     chat1->appendMessage(msg1);
     chat1->appendMessage(msg2);
     chat1->appendMessage(msg1);
-    m_feedModel->appendRow(new Chat("chat2", m_feedModel));
-    m_feedModel->appendMessage(1,msg3);
-    m_feedModel->appendRow(new Chat("chat3", m_feedModel));
-    m_feedModel->appendMessage("chat3",msg4);
+    msg1.text="oi1";
+    msg2.text="oi2";
+    msg3.text="oi3";
+    msg4.text="oi4";
+    m_feedModel->appendRow(new Chat("3333", m_feedModel));
+    msg3.id=3333;
+    m_feedModel->appendMessage(msg3);
+    m_feedModel->appendMessage("3333",msg4);
+//    m_feedModel->appendMessage("4444",msg4);
 }
 
 //QT
@@ -173,6 +206,52 @@ void TEMG::whenAuthSignErrorReceived(TelegramNamespace::AuthSignError errorCode,
             return;
     }
 }
+
+void TEMG::whenMessageReceived(const TelegramNamespace::Message &message){
+
+
+    TelegramNamespace::Message processedMessage = message;
+
+    switch (processedMessage.type) {
+    case TelegramNamespace::MessageTypePhoto:
+    case TelegramNamespace::MessageTypeVideo:
+        //m_core->requestMessageMediaData(processedMessage.id);
+        break;
+    case TelegramNamespace::MessageTypeGeo: {
+        TelegramNamespace::MessageMediaInfo info;
+        //m_core->getMessageMediaInfo(&info, processedMessage.id);
+        processedMessage.text = QString("%1%2, %3%4").arg(info.latitude()).arg(QChar(0x00b0)).arg(info.longitude()).arg(QChar(0x00b0));
+    }
+        break;
+    default:
+        break;
+    }
+
+    m_feedModel->appendMessage(processedMessage);
+//    m_core->setMessageRead(processedMessage.contact, processedMessage.id);
+}
+
+
+//telegram-qt x qml
+void TEMG::whenRegisterGetCode(const QString& n){
+    qWarning() << "getting code" << n;
+
+    m_core->requestPhoneStatus(n);
+    m_core->requestPhoneCode(n);
+
+    m_appState = AppStateCodeRequested;
+}
+void TEMG::whenRegisterSign(const QString& number, const QString& code, const QString& name, const QString& surname){
+    if(m_registered){
+        qWarning() << "signing IN " << number << "with" << code;
+        m_core->signIn(number, code);
+    }
+    else{
+        qWarning() << "signing UP " << number;
+        m_core->signUp(number, code, name, surname);
+    }
+}
+
 
 //telegram-qt handlers
 void TEMG::setAppState(AppState newState){

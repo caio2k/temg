@@ -3,42 +3,50 @@
 
 #include <QObject>
 #include <QAbstractListModel>
+
 #include "listmodel.h"
+
+#include "TelegramNamespace.hpp"
 
 class Message : public MyListItem
 {
     Q_OBJECT
-    Q_PROPERTY(QString sender READ sender WRITE setSender)
+    Q_PROPERTY(QString peer READ peer WRITE setPeer)
 //    Q_PROPERTY(QString sender READ getSender WRITE setSender NOTIFY changeSender)
-    Q_PROPERTY(QString destiny READ destiny WRITE setDestiny)
-    Q_PROPERTY(QString content READ content WRITE setContent)
+    Q_PROPERTY(QString contact READ contact WRITE setContact)
+    Q_PROPERTY(QString text READ text WRITE setText)
 public:
     enum Roles {
-        SenderRole,
-        DestinyRole,
-        ContentRole
+        PeerRole,
+        ContactRole,
+        TextRole
     };
 
     Message(QObject *parent = 0): MyListItem(parent) {}
     QHash<int, QByteArray> roleNames() const;
     QVariant data(int role) const;
 //    explicit Message(QObject *parent = 0, QString messageSender = NULL, QString messageContent = NULL);
-    explicit Message(const QString&, const QString&, const QString&, QObject *parent = 0);
+    explicit Message(const TelegramNamespace::Message&, QObject *parent = 0);
 
     //getters and setters
-    void setSender(const QString&);
-    void setDestiny(const QString&);
-    void setContent(const QString&);
-    inline QString id() const { return m_sender; }
-    inline QString sender() const { return m_sender; }
-    inline QString destiny() const { return m_destiny; }
-    inline QString content() const { return m_content; }
+    void setPeer(const QString&);
+    void setContact(const QString&);
+    void setText(const QString&);
+    inline QString id() const { return QString(m_id); }
+    inline QString peer() const { return m_peer; }
+    inline QString contact() const { return m_contact; }
+    inline QString text() const { return m_text; }
 
 private:
-    QString m_sender;
-    QString m_destiny;
-    QString m_content;
-
+    QString m_peer;
+    QString m_contact;
+    QString m_text;
+    quint32 m_id;
+    quint32 m_timestamp;
+    QString m_fwdContact;
+    quint32 m_fwdTimestamp;
+    //MessageType type;
+    //MessageFlags flags;
 signals:
 //    void setSender(const QString&);
 //    void changeSender(const QString&);

@@ -1,7 +1,7 @@
 #include "message.h"
 
-Message::Message(const QString& sender, const QString& destiny, const QString& content, QObject *parent) :
-    MyListItem(parent), m_sender(sender), m_destiny(destiny), m_content(content)
+Message::Message(const TelegramNamespace::Message& m, QObject *parent) :
+    MyListItem(parent), m_peer(m.peer), m_contact(m.contact), m_text(m.text), m_id(m.id), m_timestamp(m.timestamp), m_fwdContact(m.fwdContact), m_fwdTimestamp(m.fwdTimestamp)
 {
 }
 
@@ -9,36 +9,36 @@ Message::Message(const QString& sender, const QString& destiny, const QString& c
 QHash<int, QByteArray> Message::roleNames() const
 {
   QHash<int, QByteArray> names;
-  names[SenderRole] = "sender";
-  names[DestinyRole] = "destiny";
-  names[ContentRole] = "content";
+  names[PeerRole] = "peer";
+  names[ContactRole] = "contact";
+  names[TextRole] = "text";
   return names;
 }
 
 QVariant Message::data(int role) const
 {
   switch(role) {
-  case SenderRole:
-    return sender();
-  case DestinyRole:
-    return destiny();
-  case ContentRole:
-    return content();
+  case PeerRole:
+    return peer();
+  case ContactRole:
+    return contact();
+  case TextRole:
+    return text();
   default:
     return QVariant();
   }
 }
 
 //setters
-void Message::setSender(const QString& s){
-    m_sender = s;
+void Message::setPeer(const QString& p){
+    m_peer = p;
 }
 
-void Message::setDestiny(const QString& s){
-    m_destiny = s;
+void Message::setContact(const QString& c){
+    m_contact = c;
 }
 
-void Message::setContent(const QString& m){
-    m_content = m;
+void Message::setText(const QString& t){
+    m_text = t;
 }
 

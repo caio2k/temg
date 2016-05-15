@@ -30,6 +30,7 @@ Q_DECL_EXPORT int main(int argc, char *argv[])
     qmlRegisterType<Message>("Temg.Core", 1,0, "Message");
     qmlRegisterType<Feed>("Temg.Core", 1,0, "Feed");
     qmlRegisterType<StatusIcon>("Temg.Core", 1,0, "StatusIcon");
+    //qmlRegisterType<Register>("Temg.Core", 1,0, "Register");
 
     //QT
     app->setApplicationName("temg");
