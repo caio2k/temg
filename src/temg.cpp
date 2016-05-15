@@ -110,11 +110,15 @@ void TEMG::createMockChats(){
     chat1->appendMessage(msg2);
     chat1->appendMessage(msg1);
     msg1.text="oi1";
+    msg1.peer="1111";
     msg2.text="oi2";
+    msg2.peer="1111";
     msg3.text="oi3";
+    msg3.peer="3333";
     msg4.text="oi4";
+    msg4.peer="3333";
     m_feedModel->appendRow(new Chat("3333", m_feedModel));
-    msg3.id=3333;
+    msg3.peer="3333";
     m_feedModel->appendMessage(msg3);
     m_feedModel->appendMessage("3333",msg4);
 //    m_feedModel->appendMessage("4444",msg4);

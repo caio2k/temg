@@ -92,9 +92,9 @@ void Chat::appendMessage(Message* msg){
 }
 
 QString Chat::lastMessage() const{
-    if(m_messages.size()>0)
-        return m_messages.last()->text();
-    return "empty";
+    if(m_messages.isEmpty())
+        return "empty";
+    return m_messages.last()->text();
 }
 
 //getters and setters
