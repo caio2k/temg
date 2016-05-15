@@ -1,2 +1,2 @@
 #options = developer-build
-#options += static-lib
+options += static-lib

@@ -50,11 +50,8 @@ SOURCES += \
     src/temg.cpp \
     src/statusicon.cpp
 
-INCLUDEPATH += telegram-qt
-
 TEMPLATE = app
 TARGET = temg
-SUBDIRS = telegram-qt
 
 include(options.pri)
 
@@ -73,15 +70,20 @@ include(qmlapplicationviewer/qmlapplicationviewer.pri)
 qtcAddDeployment()
 
 # library telegram-qt
+include(telegram-qt/telegram-qt.pri)
+
 win32:CONFIG(release, debug|release): LIBS += -L$$OUT_PWD/telegram-qt/release/ -lTelegramQt
 else:win32:CONFIG(debug, debug|release): LIBS += -L$$OUT_PWD/telegram-qt/debug/ -lTelegramQt
-else:symbian: LIBS += -lTelegramQt
-else:unix: LIBS += -L$$OUT_PWD/telegram-qt/ -lTelegramQt
+else:symbian: LIBS += -L$$OUT_PWD/telegram-qt/ -lTelegramQt
+else:unix: LIBS += -L$$OUT_PWD/telegram-qt/
 
 INCLUDEPATH += $$PWD/telegram-qt
 DEPENDPATH += $$PWD/telegram-qt
 
-
+# MeeGo Harmattan
+contains(MEEGO_EDITION,harmattan) {
+    PKGCONFIG += qdeclarative-boostable libresourceqt1
+}
 
 
 
