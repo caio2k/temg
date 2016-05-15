@@ -58,27 +58,15 @@ void TEMG::init(){
     m_core->setAcceptableMessageTypes(TelegramNamespace::MessageTypeText);
 
 
-    //start connection to telegram server
-    QVector<TelegramNamespace::DcOption> prodServers;
-    prodServers << TelegramNamespace::DcOption(QLatin1String("149.154.167.50"), 443);
-    QVector<TelegramNamespace::DcOption> testServers;
-    testServers << TelegramNamespace::DcOption(QLatin1String("149.154.167.40"), 443);
+    settingsLoad();
 
-//    m_core->initConnection(prodServers);
-    m_core->initConnection(testServers);
-
-    //load secret file if it exists
-    QFile file("/home/caio/secret.temg");
-    if(file.open(QIODevice::ReadOnly)) {
-        qWarning() << "secret: loading file";
-        QByteArray secretInfo = QByteArray::fromHex(file.readAll());
-     //   m_core->restoreConnection(secretInfo);
+    if (m_secretInfo.isEmpty()){
+        m_core->initConnection(m_servers);
     }
     else{
-        qWarning() << "secret: NOT loading file, please proceed to registration";
+        m_core->restoreConnection(m_secretInfo);
     }
-    //setStatusIcon("");
-    //statusIcon = new QString("");
+
     setOrientation(QmlApplicationViewer::ScreenOrientationAuto);
 }
 
@@ -165,6 +153,8 @@ void TEMG::whenConnectionStateChanged(TelegramNamespace::ConnectionState state)
         break;
     case TelegramNamespace::ConnectionStateReady:
         setAppState(AppStateReady);
+        m_secretInfo = m_core->connectionSecretInfo();
+        settingsSave();
 
 //        ui->phoneNumber->setText(m_core->selfPhone());
 //        ui->firstName->setText(m_core->contactFirstName(m_core->selfPhone()));
@@ -251,13 +241,34 @@ void TEMG::whenMessageReceived(const TelegramNamespace::Message &message){
 //    m_core->setMessageRead(processedMessage.contact, processedMessage.id);
 }
 
+//settings
+void TEMG::settingsLoad(){
+    qWarning() << "loading from" << m_settingsFile;
+    QDir dir(QDir::homePath());
+    dir.mkpath(m_settingsPath);
+    QSettings settings(m_settingsFile, QSettings::NativeFormat);
+    m_phoneNumber = settings.value("phoneNumber", "").toString();
+    m_secretInfo = QByteArray::fromHex(settings.value("secretInfo", "").toByteArray());
+    m_servers.append(TelegramNamespace::DcOption(settings.value("server1","149.154.167.40").toString(), 443));
+}
+void TEMG::settingsSave(){
+    qWarning() << "saving to" << m_settingsFile;
+    QDir dir(QDir::homePath());
+    dir.mkpath(m_settingsPath);
+    QSettings settings(m_settingsFile, QSettings::NativeFormat);
+    settings.setValue("phoneNumber", m_phoneNumber);
+    settings.setValue("secretInfo", m_secretInfo.toHex());
+    settings.setValue("server1", m_servers.at(0).address);
+}
 
 //telegram-qt x qml
-void TEMG::whenRegisterGetCode(const QString& n){
-    qWarning() << "getting code" << n;
+void TEMG::whenRegisterGetCode(const QString& number){
+    qWarning() << "getting code" << number;
 
-    m_core->requestPhoneStatus(n);
-    m_core->requestPhoneCode(n);
+    m_phoneNumber = number;
+    settingsSave();
+    m_core->requestPhoneStatus(m_phoneNumber);
+    m_core->requestPhoneCode(m_phoneNumber);
 
     m_appState = AppStateCodeRequested;
 }

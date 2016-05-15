@@ -8,6 +8,8 @@
 #include <QDeclarativeContext>
 #include <QDeclarativeView>
 #include <QGraphicsObject>
+#include <QSettings>
+#include <QDir>
 
 //telegram-qt
 #include "telegram-qt/CTelegramCore.hpp"
@@ -52,6 +54,13 @@ signals:
 private:
     void setAppState(AppState);
 
+    //settings
+    void settingsSave();
+    void settingsLoad();
+    QString m_settingsPath = QDir::homePath() + "/.temg/";
+    QString m_settingsFile = m_settingsPath + "temg.ini";
+    QVector<TelegramNamespace::DcOption> m_servers;
+
     quint32 m_activeChatId;
     bool m_chatCreationMode;
 
@@ -69,6 +78,9 @@ private:
     //Register* m_register;
     QString m_phoneNumber;
     QString m_code;
+    QByteArray m_secretInfo;
+
+
 };
 
 
