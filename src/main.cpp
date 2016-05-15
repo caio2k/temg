@@ -21,10 +21,6 @@
 
 Q_DECL_EXPORT int main(int argc, char *argv[])
 {
-    //QT
-    QScopedPointer<QApplication> app(createApplication(argc, argv));
-    QScopedPointer<TEMG> viewer(TEMG::create());
-
     //temg: making classes available in QML
     qmlRegisterType<Chat>("Temg.Core", 1,0, "Chat");
     qmlRegisterType<Message>("Temg.Core", 1,0, "Message");
@@ -33,14 +29,18 @@ Q_DECL_EXPORT int main(int argc, char *argv[])
     //qmlRegisterType<Register>("Temg.Core", 1,0, "Register");
 
     //QT
+    QScopedPointer<QApplication> app(createApplication(argc, argv));
+    QScopedPointer<TEMG> viewer(TEMG::create());
+
+    //QT
     app->setApplicationName("temg");
     app->setOrganizationName("temg");
     app->setApplicationVersion(APP_VERSION);
 
-    viewer->showExpanded();
     //temg: intialize QML signals
     viewer->loadQML();
     viewer->createMockChats();
+    viewer->showExpanded();
 
     return app->exec();
 

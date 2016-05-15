@@ -82,7 +82,9 @@ DEPENDPATH += $$PWD/telegram-qt
 
 # MeeGo Harmattan
 contains(MEEGO_EDITION,harmattan) {
-    PKGCONFIG += qdeclarative-boostable libresourceqt1
+    PKGCONFIG += qdeclarative-boostable
+#    target.path = /opt/telegram-qt/lib
+#    INSTALLS += target
 }
 
 

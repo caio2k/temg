@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE QtCreatorProject>
-<!-- Written by Qt Creator 2.3.1, 2016-05-15T16:55:12. -->
+<!-- Written by Qt Creator 2.3.1, 2016-05-15T20:19:21. -->
 <qtcreator>
  <data>
   <variable>ProjectExplorer.Project.ActiveTarget</variable>
@@ -411,10 +411,18 @@
       <value type="QString" key="ProjectExplorer.ProjectConfiguration.DefaultDisplayName">Deploy Debian package via SFTP upload</value>
       <value type="QString" key="ProjectExplorer.ProjectConfiguration.DisplayName"></value>
       <value type="QString" key="ProjectExplorer.ProjectConfiguration.Id">MaemoUploadAndInstallDpkgPackageStep</value>
-      <valuelist type="QVariantList" key="Qt4ProjectManager.MaemoRunConfiguration.LastDeployedFiles"/>
-      <valuelist type="QVariantList" key="Qt4ProjectManager.MaemoRunConfiguration.LastDeployedHosts"/>
-      <valuelist type="QVariantList" key="Qt4ProjectManager.MaemoRunConfiguration.LastDeployedRemotePaths"/>
-      <valuelist type="QVariantList" key="Qt4ProjectManager.MaemoRunConfiguration.LastDeployedTimes"/>
+      <valuelist type="QVariantList" key="Qt4ProjectManager.MaemoRunConfiguration.LastDeployedFiles">
+       <value type="QString">/mnt/sd/devel/n9/temg-build-harmattan-Harmattan_Target__Qt_SDK__Release/temg_0.0.1_armel.deb</value>
+      </valuelist>
+      <valuelist type="QVariantList" key="Qt4ProjectManager.MaemoRunConfiguration.LastDeployedHosts">
+       <value type="QString">192.168.2.15</value>
+      </valuelist>
+      <valuelist type="QVariantList" key="Qt4ProjectManager.MaemoRunConfiguration.LastDeployedRemotePaths">
+       <value type="QString"></value>
+      </valuelist>
+      <valuelist type="QVariantList" key="Qt4ProjectManager.MaemoRunConfiguration.LastDeployedTimes">
+       <value type="QDateTime">2016-05-15T20:08:46</value>
+      </valuelist>
      </valuemap>
      <value type="int" key="ProjectExplorer.BuildStepList.StepsCount">3</value>
      <value type="QString" key="ProjectExplorer.ProjectConfiguration.DefaultDisplayName">Deploy</value>

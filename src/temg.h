@@ -33,6 +33,7 @@ public:
     //overwriting create from QmlApplicationViewer
     static TEMG* create();
 
+    void init();
     void loadQML();
     void createMockChats();
 
@@ -66,6 +67,8 @@ private:
     Feed* m_feedModel;
     StatusIcon* m_statusIcon;
     //Register* m_register;
+    QString m_phoneNumber;
+    QString m_code;
 };
 
 

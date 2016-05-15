@@ -8,8 +8,19 @@ TEMG::TEMG(QWidget *parent) :
     QmlApplicationViewer(parent),
     m_feedModel(new Feed(parent)),
     m_statusIcon(new StatusIcon())
-    //m_register(new Register())
 {
+    init();
+}
+
+TEMG::TEMG(QDeclarativeView *view, QWidget *parent)
+    : QmlApplicationViewer(view,parent),
+    m_feedModel(new Feed(parent)),
+    m_statusIcon(new StatusIcon())
+{
+    init();
+}
+
+void TEMG::init(){
     //telegram-qt: setting initial values
     m_core=new CTelegramCore(this);
     CAppInformation appInfo;
@@ -71,12 +82,6 @@ TEMG::TEMG(QWidget *parent) :
     setOrientation(QmlApplicationViewer::ScreenOrientationAuto);
 }
 
-TEMG::TEMG(QDeclarativeView *view, QWidget *parent)
-    : QmlApplicationViewer(view,parent)
-{
-
-}
-
 void TEMG::loadQML(){
 
     rootContext()->setContextProperty("chatsModel", m_feedModel);
@@ -130,11 +135,11 @@ void TEMG::createMockChats(){
 //QT
 TEMG* TEMG::create()
 {
-#ifdef HARMATTAN_BOOSTER
-    return new TEMG(MDeclarativeCache::qDeclarativeView(), 0);
-#else
+//#ifdef HARMATTAN_BOOSTER
+//    return new TEMG(MDeclarativeCache::qDeclarativeView(), 0);
+//#else
     return new TEMG();
-#endif
+//#endif
 }
 
 //temg signal handling
@@ -199,21 +204,26 @@ void TEMG::whenPhoneCodeRequested()
 
 void TEMG::whenAuthSignErrorReceived(TelegramNamespace::AuthSignError errorCode, const QString &errorMessage){
     switch (errorCode) {
-        case TelegramNamespace::AuthSignErrorPhoneNumberIsInvalid:
-            if (m_appState == AppStateCodeRequested) {
-                qWarning() << "phone number is invalid";
-                setAppState(AppStateNone);
-            }
-            break;
-        case TelegramNamespace::AuthSignErrorPhoneCodeIsExpired:
-            qWarning() << "phone code is expired";
-            break;
-        case TelegramNamespace::AuthSignErrorPhoneCodeIsInvalid:
-            qWarning() << "phone code is invalid";
-            break;
-        default:
-            qDebug() << "Unknown auth sign error:" << errorMessage;
-            return;
+    case TelegramNamespace::AuthSignErrorPhoneNumberIsInvalid:
+        if (m_appState == AppStateCodeRequested) {
+            qWarning() << "phone number is invalid";
+            setAppState(AppStateNone);
+        }
+        break;
+    case TelegramNamespace::AuthSignErrorPhoneCodeIsExpired:
+        qWarning() << "phone code is expired";
+        break;
+    case TelegramNamespace::AuthSignErrorPhoneCodeIsInvalid:
+        qWarning() << "phone code is invalid";
+        break;
+    case TelegramNamespace::AuthSignErrorPhoneNumberIsOccupied:
+        qWarning() << "phone number already registered";
+        m_registered = true;
+        m_core->signIn(m_phoneNumber, m_code);
+        break;
+    default:
+        qDebug() << "Unknown auth sign error:" << errorMessage;
+        return;
     }
 }
 
@@ -252,13 +262,15 @@ void TEMG::whenRegisterGetCode(const QString& n){
     m_appState = AppStateCodeRequested;
 }
 void TEMG::whenRegisterSign(const QString& number, const QString& code, const QString& name, const QString& surname){
+    m_phoneNumber = number;
+    m_code = code;
     if(m_registered){
         qWarning() << "signing IN " << number << "with" << code;
-        m_core->signIn(number, code);
+        m_core->signIn(m_phoneNumber, m_code);
     }
     else{
         qWarning() << "signing UP " << number;
-        m_core->signUp(number, code, name, surname);
+        m_core->signUp(m_phoneNumber, m_code, name, surname);
     }
 }
 
