@@ -21,6 +21,9 @@ TEMG::TEMG(QDeclarativeView *view, QWidget *parent)
 }
 
 void TEMG::init(){
+    m_settingsPath = QDir::homePath() + "/.temg/";
+    m_settingsFile = m_settingsPath + "temg.ini";
+
     //telegram-qt: setting initial values
     m_core=new CTelegramCore(this);
     CAppInformation appInfo;
@@ -102,17 +105,20 @@ void TEMG::loadQML(){
 void TEMG::createMockChats(){
     Chat* chat1 = new Chat("1111");
     m_feedModel->appendRow(chat1);
-    TelegramNamespace::Message msg1 = TelegramNamespace::Message();
-    TelegramNamespace::Message msg2 = TelegramNamespace::Message();
+    TelegramNamespace::Message *msg1 = new TelegramNamespace::Message();
+    TelegramNamespace::Message *msg2 = new TelegramNamespace::Message();
     TelegramNamespace::Message msg3 = TelegramNamespace::Message();
     TelegramNamespace::Message msg4 = TelegramNamespace::Message();
-    chat1->appendMessage(msg1);
-    chat1->appendMessage(msg2);
-    chat1->appendMessage(msg1);
-    msg1.text="oi1";
-    msg1.peer="1111";
-    msg2.text="oi2";
-    msg2.peer="1111";
+    msg1->text="oi1";
+    msg1->peer="1111";
+    msg2->text="oi2";
+    msg2->peer="1111";
+    chat1->appendMessage(*msg1);
+    qWarning() << "numero de chat1 " << chat1->lastMessage();
+    chat1->appendMessage(*msg2);
+    qWarning() << "numero de chat1 " << chat1->lastMessage();
+    chat1->appendMessage(*msg1);
+    qWarning() << "numero de chat1 " << chat1->lastMessage();
     msg3.text="oi3";
     msg3.peer="3333";
     msg4.text="oi4";

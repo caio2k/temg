@@ -64,7 +64,7 @@ QHash<int, QByteArray> Chat::roleNames() const
 {
   QHash<int, QByteArray> names;
   names[NameRole] = "name";
-//  names[MessagesRole] = "messages";
+  names[MessagesRole] = "messages";
   names[LastRole] = "lastMessage";
   return names;
 }
@@ -74,6 +74,8 @@ QVariant Chat::data(int role) const
   switch(role) {
   case NameRole:
     return name();
+//  case MessagesRole:
+//    return messages();
   case LastRole:
     return lastMessage();
   default:
@@ -84,11 +86,13 @@ QVariant Chat::data(int role) const
 void Chat::appendMessage(const TelegramNamespace::Message& m){
     //check if id already exists. if this is the case, just update
     m_messages.append(new Message(m));
+    emit dataChanged();
     //if timestamp doesn't exists, update it with QDateTime::currentMSecsSinceEpoch() / 1000;
 }
 
 void Chat::appendMessage(Message* msg){
     m_messages.append(msg);
+    emit dataChanged();
 }
 
 QString Chat::lastMessage() const{

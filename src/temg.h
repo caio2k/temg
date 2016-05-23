@@ -57,8 +57,8 @@ private:
     //settings
     void settingsSave();
     void settingsLoad();
-    QString m_settingsPath = QDir::homePath() + "/.temg/";
-    QString m_settingsFile = m_settingsPath + "temg.ini";
+    QString m_settingsPath;
+    QString m_settingsFile;
     QVector<TelegramNamespace::DcOption> m_servers;
 
     quint32 m_activeChatId;

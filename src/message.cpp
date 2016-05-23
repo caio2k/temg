@@ -3,6 +3,7 @@
 Message::Message(const TelegramNamespace::Message& m, QObject *parent) :
     MyListItem(parent), m_peer(m.peer), m_contact(m.contact), m_text(m.text), m_id(m.id), m_timestamp(m.timestamp), m_fwdContact(m.fwdContact), m_fwdTimestamp(m.fwdTimestamp)
 {
+    qWarning() << "creating msg" << m_peer << "with content" << m_text;
 }
 
 //overwriting functions from ListItem

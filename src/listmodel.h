@@ -3,6 +3,8 @@
 
 #include <QAbstractListModel>
 
+#include <QDebug>
+
 class MyListItem: public QObject {
   Q_OBJECT
 
@@ -36,6 +38,7 @@ public:
   QModelIndex indexFromItem( const MyListItem* item) const;
   void clear();
   QHash<int, QByteArray> roleNames() const;
+  Q_INVOKABLE MyListItem* get(int index) const;
 
 private slots:
   void handleItemChange();

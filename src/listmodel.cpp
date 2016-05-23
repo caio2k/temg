@@ -21,7 +21,7 @@ int MyListModel::rowCount(const QModelIndex &parent) const
 
 QVariant MyListModel::data(const QModelIndex &index, int role) const
 {
-  if(index.row() < 0 || index.row() >= m_list.size())
+  if(!index.isValid() || index.row() < 0 || index.row() >= rowCount())
     return QVariant();
   return m_list.at(index.row())->data(role);
 }
@@ -120,4 +120,9 @@ MyListItem * MyListModel::takeRow(int row)
 QHash<int, QByteArray> MyListModel::roleNames() const
 {
     return m_prototype->roleNames();
+}
+
+MyListItem* MyListModel::get(int index) const {
+    qWarning() << index << "at" <<  m_list.at(index);
+    return m_list.at(index);
 }

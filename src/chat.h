@@ -13,12 +13,14 @@ class Chat : public MyListItem
 {
     Q_OBJECT
     Q_PROPERTY(QString name READ name WRITE changeName)
+    Q_PROPERTY(QString lastMessage READ lastMessage)
     Q_PROPERTY(QDeclarativeListProperty<Message> messages READ messages)
 //    Q_PROPERTY(QString *chatMessages READ getMessages WRITE setMessages)
 
 public:
     enum Roles {
         NameRole,
+        MessagesRole,
         LastRole
     };
     enum Columns {
@@ -42,7 +44,7 @@ public:
     QVariant data(int role) const;
     inline QString id() const { return m_name; }
 
-    Q_INVOKABLE QString lastMessage() const;
+    QString lastMessage() const;
     Q_INVOKABLE void appendMessage(const TelegramNamespace::Message&);
     Q_INVOKABLE void appendMessage(Message*);
     Q_INVOKABLE void changeName(const QString&);
@@ -58,7 +60,6 @@ private:
     QList<Message *> m_messages;
 
 signals:
-
 
 public slots:
 

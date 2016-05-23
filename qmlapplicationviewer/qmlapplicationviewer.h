@@ -39,8 +39,6 @@ public:
 
 protected:
     explicit QmlApplicationViewer(QDeclarativeView *view, QWidget *parent);
-
-private:
     class QmlApplicationViewerPrivate *d;
 };
 

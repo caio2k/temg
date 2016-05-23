@@ -14,7 +14,7 @@ PageStackWindow {
 
   Component.onCompleted: {
       theme.inverted = !theme.inverted
-      console.log("The chart has been cleared ",statusIcon.icon)
+      chatsList.currentIndex = -1
   }
 
   function showMessage(title, message) {
@@ -52,6 +52,8 @@ PageStackWindow {
         delegate: chatsDelegate
         model: chatsModel
         anchors.fill: parent
+        //verticalLayoutDirection: ListView.BottomToTop
+        //onCurrentItemChanged: console.log(chatsList.currentItem + ' selected')
       }
     }
 
@@ -137,38 +139,30 @@ PageStackWindow {
               id: nameField
               width: parent.width
               color: "lightblue"
+              font.pointSize: 26
               font.bold: true
-              text: name
+              text: model.name
           }
           Text {
               id: lastField
               anchors.top: nameField.bottom
               width: parent.width
               color: "lightgray"
-              text: lastMessage
+              font.pointSize: 20
+              text: model.lastMessage
           }
-          /*Row {
-              anchors.top: lastField.bottom
-              Repeater {
-                  model: messages
-                  Text {
-                      width:parent.width
-                      text:  sender + ">" + content
-                  }
+          MouseArea{
+              id: chatMouseArea
+              anchors.fill: parent
+              onClicked: {
+                  //messagesModel.clear();
+                  messagesModel.append({"peer": model.name, "content": model.lastMessage });
+                  pageStack.push(chatPage);
               }
-          }*/
+          }
       }
   }
 
-  Chat{
-      id: teste1
-      name: "chat1"
-      messages: [
-          Message { peer: "testador1"; contact: "you1"; text: "bla1"},
-          Message { peer: "testador2"; contact: "you2"; text: "bla2"},
-          Message { peer: "testador3"; contact: "you3"; text: "bla3"}
-      ]
-  }
   Page{
     id: registerPage
     tools: registerTool
@@ -185,7 +179,7 @@ PageStackWindow {
         }
         Button {
             id: registerCodeButton
-            text: "Insert Code"
+            text: "Get Registration Code"
             onClicked: rootWin.requestRegisterGetCode()
         }
         TextField {
@@ -210,11 +204,12 @@ PageStackWindow {
         Button {
             id: registerSignUpButton
             //enabled: false
-            text: "Insert Code"
+            text: "Insert Registration Code"
             onClicked: rootWin.requestRegisterSign()
         }
     }
   }
+
   ToolBarLayout {
     id: registerTool
     visible: false
@@ -224,6 +219,58 @@ PageStackWindow {
        iconId: "icon-m-toolbar-back-white";
        onClicked: {
          pageStack.pop();
+       }
+    }
+  }
+
+  Page {
+    id: chatPage
+    //property variant chat
+    tools: messagesTool
+    ListView {
+      id: messagesList
+      delegate: messagesDelegate
+      model: messagesModel
+      //anchors.fill: parent
+    }
+  }
+  ListModel {
+      id: messagesModel
+      ListElement{
+          peer: "fulano"
+          content: "oi mundo"
+      }
+      ListElement{
+          peer: "fulano2"
+          content: "oi mundo2"
+      }
+  }
+  Component{
+      id:messagesDelegate
+      Item {
+          width: parent.width
+          height: 100
+          Text {
+              width: parent.width
+              text:  model.peer + ">> " + model.content
+              color: "lightgray"
+          }
+          MouseArea{
+              id: chatMouseArea
+              anchors.fill: parent
+          }
+      }
+  }
+
+  ToolBarLayout {
+    id: messagesTool
+    visible: false
+
+    ToolItem {
+       id: messagesBackIcon
+       iconId: "icon-m-toolbar-back-white";
+       onClicked: {
+           pageStack.pop();
        }
     }
   }
