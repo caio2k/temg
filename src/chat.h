@@ -6,22 +6,29 @@
 #include <QDeclarativeListProperty>
 #include "message.h"
 #include "listmodel.h"
-
+#include "qdeclarativecontext.h"
 #include "CTelegramCore.hpp"
 
 class Chat : public MyListItem
 {
     Q_OBJECT
-    Q_PROPERTY(QString name READ name WRITE changeName)
-    Q_PROPERTY(QString lastMessage READ lastMessage)
-    Q_PROPERTY(QDeclarativeListProperty<Message> messages READ messages)
+    //Q_PROPERTY(QString name READ name WRITE changeName)
+    //Q_PROPERTY(QString lastMessage READ lastMessage)
+    //Q_PROPERTY(QDeclarativeListProperty<Message> messages READ messages) //it doesnt works!
+    //Q_PROPERTY(QString message READ message)
+    //Q_PROPERTY(QString countMessages READ countMessages)
+
+    //Q_PROPERTY(QDeclarativeListProperty<Chat> messages READ messages )
 //    Q_PROPERTY(QString *chatMessages READ getMessages WRITE setMessages)
 
 public:
     enum Roles {
         NameRole,
+        LastRole,
         MessagesRole,
-        LastRole
+        PeerRole,
+        TextRole,
+        CountRole
     };
     enum Columns {
         Peer,
@@ -50,14 +57,35 @@ public:
     Q_INVOKABLE void changeName(const QString&);
     // getters and setters
     inline QString name() const { return m_name; }
-    QDeclarativeListProperty<Message> messages();
+    Q_INVOKABLE QDeclarativeListProperty<Message> messages() const;
 
     // inspired by telegram-qt
     QVariant headerData(int, Qt::Orientation, int role) const;
 
+    //QDeclarativeListProperty complications
+    static void appendMessagesList(QDeclarativeListProperty<Message> *l, Message *m) {
+        //Chat c = qobject_cast<Chat>(l->object);
+        //if(m)
+        //    message->append(m);
+        Chat* c = static_cast<Chat*>(l->object);
+        m->setParent(c);
+        return c->m_messages.append(m);
+    }
+    int countMessagesList(QDeclarativeListProperty<Message> *l)
+    {
+       Chat* c = static_cast<Chat*>(l->object);
+       return c->m_messages.count();
+    }
+    static Message* atMessagesList(QDeclarativeListProperty<Message> *property, int index) {
+       Chat* c = qobject_cast<Chat*>(property->object);
+       return c->m_messages.at(index);
+    }
+    static void clearMessagesList(QDeclarativeListProperty<Message> *property) {
+       Message* m = qobject_cast<Message*>(property->object);
+    }
 private:
     QString m_name;
-    QList<Message *> m_messages;
+    QList<Message*> m_messages;
 
 signals:
 

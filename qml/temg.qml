@@ -134,12 +134,12 @@ PageStackWindow {
       id:chatsDelegate
       Item {
           width: parent.width
-          height: 100
+          height: 120
           Text {
               id: nameField
               width: parent.width
               color: "lightblue"
-              font.pointSize: 26
+              font.pixelSize: 50
               font.bold: true
               text: model.name
           }
@@ -148,15 +148,19 @@ PageStackWindow {
               anchors.top: nameField.bottom
               width: parent.width
               color: "lightgray"
-              font.pointSize: 20
+              font.pixelSize: 40
               text: model.lastMessage
           }
           MouseArea{
               id: chatMouseArea
               anchors.fill: parent
               onClicked: {
-                  //messagesModel.clear();
-                  messagesModel.append({"peer": model.name, "content": model.lastMessage });
+                  messagesModel.clear();
+//                console.log("msgs "+ model.message);
+                  for (var i = 0; i < model.count ; i++)
+                  {
+                      messagesModel.append({"peer": model.peer[i], "content": model.text[i] });
+                  }
                   pageStack.push(chatPage);
               }
           }
@@ -231,7 +235,7 @@ PageStackWindow {
       id: messagesList
       delegate: messagesDelegate
       model: messagesModel
-      //anchors.fill: parent
+      anchors.fill: parent
     }
   }
   ListModel {
@@ -249,11 +253,12 @@ PageStackWindow {
       id:messagesDelegate
       Item {
           width: parent.width
-          height: 100
+          height: 50
           Text {
               width: parent.width
               text:  model.peer + ">> " + model.content
               color: "lightgray"
+              font.pixelSize: 40
           }
           MouseArea{
               id: chatMouseArea

@@ -64,18 +64,36 @@ QHash<int, QByteArray> Chat::roleNames() const
 {
   QHash<int, QByteArray> names;
   names[NameRole] = "name";
-  names[MessagesRole] = "messages";
   names[LastRole] = "lastMessage";
+  names[MessagesRole] = "messages";
+  names[PeerRole] = "peer";
+  names[TextRole] = "text";
+  names[CountRole] = "count";
   return names;
 }
-
 QVariant Chat::data(int role) const
 {
+  QList<QVariant> qvl;
+  qvl.clear();
   switch(role) {
   case NameRole:
     return name();
-//  case MessagesRole:
-//    return messages();
+  case MessagesRole:
+      return QVariant(&m_messages); //it doesnt work
+  case TextRole:
+      for(int i=0;m_messages.size()>i;i++){
+          qWarning() << m_messages.at(i)->text();
+          qvl.append(m_messages.at(i)->text());
+      }
+      return qvl; //it doesnt work
+  case PeerRole:
+      for(int i=0;m_messages.size()>i;i++){
+          qWarning() << m_messages.at(i)->peer();
+          qvl.append(m_messages.at(i)->peer());
+      }
+      return qvl; //it doesnt work
+  case CountRole:
+      return QVariant(m_messages.count()); //it doesnt work
   case LastRole:
     return lastMessage();
   default:
@@ -102,8 +120,13 @@ QString Chat::lastMessage() const{
 }
 
 //getters and setters
-QDeclarativeListProperty<Message> Chat::messages()  {
-    return QDeclarativeListProperty<Message>(this, m_messages);
+QDeclarativeListProperty<Message> Chat::messages() const {
+    //return QDeclarativeListProperty<Message>(0, m_messages);
+    //const QDeclarativeListProperty<Message> c(this, 0, &Chat::appendMessagesList, 0, &Chat::atMessagesList, &Chat::clearMessagesList);
+    //const QDeclarativeListProperty<Message> c(const_cast<Chat*>(this), 0, 0,0,0,0);
+    //return c;
+    return QDeclarativeListProperty<Message>(const_cast<Chat*>(this), 0, &Chat::appendMessagesList, 0, &Chat::atMessagesList, &Chat::clearMessagesList);
+    //return *c;
 }
 
 void Chat::changeName(const QString& n){
