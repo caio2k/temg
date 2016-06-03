@@ -11,6 +11,7 @@ PageStackWindow {
 
   signal registerGetCode(string msg)
   signal registerSign(string msg, string code, string name, string surname)
+  signal messageModelUpdate(int index)
 
   Component.onCompleted: {
       theme.inverted = !theme.inverted

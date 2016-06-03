@@ -22,7 +22,7 @@
 Q_DECL_EXPORT int main(int argc, char *argv[])
 {
     //temg: making classes available in QML
-    qmlRegisterType<Chat>("Temg.Core", 1,0, "Chat");
+    qmlRegisterType<ChatItem>("Temg.Core", 1,0, "Chat");
     qmlRegisterType<MessageItem>("Temg.Core", 1,0, "Message");
     qmlRegisterType<ChatModel>("Temg.Core", 1,0, "Feed");
     qmlRegisterType<StatusIcon>("Temg.Core", 1,0, "StatusIcon");

@@ -6,7 +6,7 @@
 
 TEMG::TEMG(QWidget *parent) :
     QmlApplicationViewer(parent),
-    m_feedModel(new ChatModel(parent)),
+    m_chatModel(new ChatModel(parent)),
     m_statusIcon(new StatusIcon())
 {
     init();
@@ -14,7 +14,7 @@ TEMG::TEMG(QWidget *parent) :
 
 TEMG::TEMG(QDeclarativeView *view, QWidget *parent)
     : QmlApplicationViewer(view,parent),
-    m_feedModel(new ChatModel(parent)),
+    m_chatModel(new ChatModel(parent)),
     m_statusIcon(new StatusIcon())
 {
     init();
@@ -75,18 +75,22 @@ void TEMG::init(){
 
 void TEMG::loadQML(){
 
-    rootContext()->setContextProperty("chatsModel", m_feedModel);
+    rootContext()->setContextProperty("chatsModel", m_chatModel);
+    rootContext()->setContextProperty("messagesModel", m_messageModel);
     rootContext()->setContextProperty("statusIcon", m_statusIcon);
     setMainQmlFile(QLatin1String("qml/temg.qml"));
-    Chat *testchat = new Chat("newname");
+    ChatItem *testchat = new ChatItem("newname");
     qWarning() << testchat->name();
     testchat->changeName("oi");
     qWarning() << testchat->name();
-    m_feedModel->appendRow(testchat);
+    m_chatModel->appendRow(testchat);
 
     //qml signals
+    ////register
     QObject::connect(this->rootObject(), SIGNAL(registerGetCode(QString)), SLOT(whenRegisterGetCode(QString)));
     QObject::connect(this->rootObject(), SIGNAL(registerSign(QString,QString,QString,QString)), SLOT(whenRegisterSign(QString,QString,QString,QString)));
+    ////messageModel
+    QObject::connect(this->rootObject(), SIGNAL(messageModelUpdate(int)), SLOT(whenMessageModelUpdate(int)));
 
     //QGraphicsObject * qgo = rootObject();
     //QObject* si = rootObject();
@@ -103,8 +107,8 @@ void TEMG::loadQML(){
 }
 
 void TEMG::createMockChats(){
-    Chat* chat1 = new Chat("1111");
-    m_feedModel->appendRow(chat1);
+    ChatItem* chat1 = new ChatItem("1111");
+    m_chatModel->appendRow(chat1);
     TelegramNamespace::Message *msg1 = new TelegramNamespace::Message();
     TelegramNamespace::Message *msg2 = new TelegramNamespace::Message();
     TelegramNamespace::Message msg3 = TelegramNamespace::Message();
@@ -123,10 +127,10 @@ void TEMG::createMockChats(){
     msg3.peer="3333";
     msg4.text="oi4";
     msg4.peer="3333";
-    m_feedModel->appendRow(new Chat("3333", m_feedModel));
+    m_chatModel->appendRow(new ChatItem("3333", m_chatModel));
     msg3.peer="3333";
-    m_feedModel->appendMessage(msg3);
-    m_feedModel->appendMessage("3333",msg4);
+    m_chatModel->appendMessage(msg3);
+    m_chatModel->appendMessage("3333",msg4);
 //    m_feedModel->appendMessage("4444",msg4);
 }
 
@@ -247,7 +251,7 @@ void TEMG::whenMessageReceived(const TelegramNamespace::Message &message){
         break;
     }
 
-    m_feedModel->appendMessage(processedMessage);
+    m_chatModel->appendMessage(processedMessage);
 //    m_core->setMessageRead(processedMessage.contact, processedMessage.id);
 }
 
@@ -294,7 +298,12 @@ void TEMG::whenRegisterSign(const QString& number, const QString& code, const QS
         m_core->signUp(m_phoneNumber, m_code, name, surname);
     }
 }
+//temg x qml
+void TEMG::whenMessageModelUpdate(const int index){
+    QList<MessageItem*>* mi = (qobject_cast<ChatItem*>(m_chatModel->get(index)))->getQList();
+    //m_messageModel->
 
+}
 
 //telegram-qt handlers
 void TEMG::setAppState(AppState newState){

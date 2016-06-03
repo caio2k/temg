@@ -1,5 +1,5 @@
-#ifndef FEED_H
-#define FEED_H
+#ifndef CHATMODEL_H
+#define CHATMODEL_H
 #include "listmodel.h"
 
 #include <QObject>
@@ -11,7 +11,7 @@ class ChatModel : public MyListModel
 
 public:
     explicit ChatModel(QObject* parent = 0);
-    ChatModel(Chat* c, QObject* parent = 0);
+    ChatModel(ChatItem* c, QObject* parent = 0);
 
     void appendMessage(const TelegramNamespace::Message&);
     void appendMessage(int idx, const TelegramNamespace::Message &);
@@ -24,4 +24,4 @@ signals:
 public slots:
 };
 
-#endif // FEED_H
+#endif // CHATMODEL_H

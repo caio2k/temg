@@ -18,6 +18,7 @@
 
 //temg
 #include "chatModel.h"
+#include "messageModel.h"
 #include "statusicon.h"
 //#include "register.h"
 #include "enum.h"
@@ -48,6 +49,7 @@ protected slots:
     void whenMessageReceived(const TelegramNamespace::Message &message);
     void whenRegisterGetCode(const QString& number);
     void whenRegisterSign(const QString& number, const QString& code, const QString& name, const QString& surname);
+    void whenMessageModelUpdate(const int index);
 
 signals:
 
@@ -73,7 +75,8 @@ private:
 
 
     //temg
-    ChatModel* m_feedModel;
+    ChatModel* m_chatModel;
+    MessageModel * m_messageModel;
     StatusIcon* m_statusIcon;
     //Register* m_register;
     QString m_phoneNumber;

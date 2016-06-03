@@ -17,12 +17,12 @@ QString messageDeliveryStatusStr(TelegramNamespace::MessageDeliveryStatus status
     }
 }
 
-Chat::Chat(const QString& name, QObject* parent) :
+ChatItem::ChatItem(const QString& name, QObject* parent) :
     MyListItem(parent), m_name(name)
 {
 }
 
-QVariant Chat::headerData(int section, Qt::Orientation orientation, int role) const
+QVariant ChatItem::headerData(int section, Qt::Orientation orientation, int role) const
 {
     if (orientation != Qt::Horizontal) {
         return QVariant();
@@ -60,7 +60,7 @@ QVariant Chat::headerData(int section, Qt::Orientation orientation, int role) co
 }
 
 //overwriting functions from ListItem
-QHash<int, QByteArray> Chat::roleNames() const
+QHash<int, QByteArray> ChatItem::roleNames() const
 {
   QHash<int, QByteArray> names;
   names[NameRole] = "name";
@@ -71,7 +71,7 @@ QHash<int, QByteArray> Chat::roleNames() const
   names[CountRole] = "count";
   return names;
 }
-QVariant Chat::data(int role) const
+QVariant ChatItem::data(int role) const
 {
   QList<QVariant> qvl;
   qvl.clear();
@@ -101,35 +101,35 @@ QVariant Chat::data(int role) const
   }
 }
 
-void Chat::appendMessage(const TelegramNamespace::Message& m){
+void ChatItem::appendMessage(const TelegramNamespace::Message& m){
     //check if id already exists. if this is the case, just update
     m_messages.append(new MessageItem(m));
     emit dataChanged();
     //if timestamp doesn't exists, update it with QDateTime::currentMSecsSinceEpoch() / 1000;
 }
 
-void Chat::appendMessage(MessageItem* msg){
+void ChatItem::appendMessage(MessageItem* msg){
     m_messages.append(msg);
     emit dataChanged();
 }
 
-QString Chat::lastMessage() const{
+QString ChatItem::lastMessage() const{
     if(m_messages.isEmpty())
         return "empty";
     return m_messages.last()->text();
 }
 
 //getters and setters
-QDeclarativeListProperty<MessageItem> Chat::messages() const {
+QDeclarativeListProperty<MessageItem> ChatItem::messages() const {
     //return QDeclarativeListProperty<Message>(0, m_messages);
     //const QDeclarativeListProperty<Message> c(this, 0, &Chat::appendMessagesList, 0, &Chat::atMessagesList, &Chat::clearMessagesList);
     //const QDeclarativeListProperty<Message> c(const_cast<Chat*>(this), 0, 0,0,0,0);
     //return c;
-    return QDeclarativeListProperty<MessageItem>(const_cast<Chat*>(this), 0, &Chat::appendMessagesList, 0, &Chat::atMessagesList, &Chat::clearMessagesList);
+    return QDeclarativeListProperty<MessageItem>(const_cast<ChatItem*>(this), 0, &ChatItem::appendMessagesList, 0, &ChatItem::atMessagesList, &ChatItem::clearMessagesList);
     //return *c;
 }
 
-void Chat::changeName(const QString& n){
+void ChatItem::changeName(const QString& n){
     m_name = n;
     emit dataChanged();
 }

@@ -39,7 +39,8 @@ HEADERS += \
     enum.h \
     src/chatItem.h \
     src/chatModel.h \
-    src/messageItem.h
+    src/messageItem.h \
+    src/messageModel.h
 
 SOURCES += \
     src/main.cpp \
@@ -48,7 +49,8 @@ SOURCES += \
     src/statusicon.cpp \
     src/chatModel.cpp \
     src/chatItem.cpp \
-    src/messageItem.cpp
+    src/messageItem.cpp \
+    src/messageModel.cpp
 
 TEMPLATE = app
 TARGET = temg
@@ -86,6 +88,12 @@ contains(MEEGO_EDITION,harmattan) {
 #    target.path = /opt/telegram-qt/lib
 #    INSTALLS += target
 }
+
+
+
+
+
+
 
 
 

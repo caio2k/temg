@@ -9,7 +9,7 @@
 #include "qdeclarativecontext.h"
 #include "CTelegramCore.hpp"
 
-class Chat : public MyListItem
+class ChatItem : public MyListItem
 {
     Q_OBJECT
     //Q_PROPERTY(QString name READ name WRITE changeName)
@@ -44,8 +44,8 @@ public:
     };
 
     //overwritten methods
-    Chat(QObject* parent = 0) : MyListItem(parent) {}
-    explicit Chat(const QString&, QObject* parent = 0);
+    ChatItem(QObject* parent = 0) : MyListItem(parent) {}
+    explicit ChatItem(const QString&, QObject* parent = 0);
     //abstract methods implementation
     QHash<int, QByteArray> roleNames() const;
     QVariant data(int role) const;
@@ -55,7 +55,7 @@ public:
     Q_INVOKABLE void appendMessage(const TelegramNamespace::Message&);
     Q_INVOKABLE void appendMessage(MessageItem*);
     Q_INVOKABLE void changeName(const QString&);
-    Q_INVOKABLE inline QString test(){ return QString("oi");}
+    inline QList<MessageItem*> *getQList(){ return &m_messages;}
     // getters and setters
     inline QString name() const { return m_name; }
     Q_INVOKABLE QDeclarativeListProperty<MessageItem> messages() const;
@@ -68,17 +68,17 @@ public:
         //Chat c = qobject_cast<Chat>(l->object);
         //if(m)
         //    message->append(m);
-        Chat* c = static_cast<Chat*>(l->object);
+        ChatItem* c = static_cast<ChatItem*>(l->object);
         m->setParent(c);
         return c->m_messages.append(m);
     }
     int countMessagesList(QDeclarativeListProperty<MessageItem> *l)
     {
-       Chat* c = static_cast<Chat*>(l->object);
+       ChatItem* c = static_cast<ChatItem*>(l->object);
        return c->m_messages.count();
     }
     static MessageItem* atMessagesList(QDeclarativeListProperty<MessageItem> *property, int index) {
-       Chat* c = qobject_cast<Chat*>(property->object);
+       ChatItem* c = qobject_cast<ChatItem*>(property->object);
        return c->m_messages.at(index);
     }
     static void clearMessagesList(QDeclarativeListProperty<MessageItem> *property) {

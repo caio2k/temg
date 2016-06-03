@@ -39,6 +39,7 @@ public:
   void clear();
   QHash<int, QByteArray> roleNames() const;
   Q_INVOKABLE MyListItem* get(int index) const;
+  QList<MyListItem*>* getQList() {return &m_list;}
 
 private slots:
   void handleItemChange();
