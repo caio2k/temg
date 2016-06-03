@@ -1,13 +1,13 @@
-#include "message.h"
+#include "messageItem.h"
 
-Message::Message(const TelegramNamespace::Message& m, QObject *parent) :
+MessageItem::MessageItem(const TelegramNamespace::Message& m, QObject *parent) :
     MyListItem(parent), m_peer(m.peer), m_contact(m.contact), m_text(m.text), m_id(m.id), m_timestamp(m.timestamp), m_fwdContact(m.fwdContact), m_fwdTimestamp(m.fwdTimestamp)
 {
     qWarning() << "creating msg" << m_peer << "with content" << m_text;
 }
 
 //overwriting functions from ListItem
-QHash<int, QByteArray> Message::roleNames() const
+QHash<int, QByteArray> MessageItem::roleNames() const
 {
   QHash<int, QByteArray> names;
   names[PeerRole] = "peer";
@@ -16,7 +16,7 @@ QHash<int, QByteArray> Message::roleNames() const
   return names;
 }
 
-QVariant Message::data(int role) const
+QVariant MessageItem::data(int role) const
 {
   switch(role) {
   case PeerRole:
@@ -31,15 +31,15 @@ QVariant Message::data(int role) const
 }
 
 //setters
-void Message::setPeer(const QString& p){
+void MessageItem::setPeer(const QString& p){
     m_peer = p;
 }
 
-void Message::setContact(const QString& c){
+void MessageItem::setContact(const QString& c){
     m_contact = c;
 }
 
-void Message::setText(const QString& t){
+void MessageItem::setText(const QString& t){
     m_text = t;
 }
 

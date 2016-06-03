@@ -17,7 +17,7 @@
 #include "telegram-qt/TelegramNamespace.hpp"
 
 //temg
-#include "feed.h"
+#include "chatModel.h"
 #include "statusicon.h"
 //#include "register.h"
 #include "enum.h"
@@ -73,7 +73,7 @@ private:
 
 
     //temg
-    Feed* m_feedModel;
+    ChatModel* m_feedModel;
     StatusIcon* m_statusIcon;
     //Register* m_register;
     QString m_phoneNumber;

@@ -8,7 +8,7 @@
 
 #include "TelegramNamespace.hpp"
 
-class Message : public MyListItem
+class MessageItem : public MyListItem
 {
     Q_OBJECT
     Q_PROPERTY(QString peer READ peer WRITE setPeer)
@@ -22,11 +22,11 @@ public:
         TextRole
     };
 
-    Message(QObject *parent = 0): MyListItem(parent) {}
+    MessageItem(QObject *parent = 0): MyListItem(parent) {}
     QHash<int, QByteArray> roleNames() const;
     QVariant data(int role) const;
 //    explicit Message(QObject *parent = 0, QString messageSender = NULL, QString messageContent = NULL);
-    explicit Message(const TelegramNamespace::Message&, QObject *parent = 0);
+    explicit MessageItem(const TelegramNamespace::Message&, QObject *parent = 0);
 
     //getters and setters
     void setPeer(const QString&);

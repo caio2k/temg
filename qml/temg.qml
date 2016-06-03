@@ -155,6 +155,7 @@ PageStackWindow {
               id: chatMouseArea
               anchors.fill: parent
               onClicked: {
+                  console.log(model.test);
                   messagesModel.clear();
 //                console.log("msgs "+ model.message);
                   for (var i = 0; i < model.count ; i++)

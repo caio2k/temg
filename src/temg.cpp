@@ -6,7 +6,7 @@
 
 TEMG::TEMG(QWidget *parent) :
     QmlApplicationViewer(parent),
-    m_feedModel(new Feed(parent)),
+    m_feedModel(new ChatModel(parent)),
     m_statusIcon(new StatusIcon())
 {
     init();
@@ -14,7 +14,7 @@ TEMG::TEMG(QWidget *parent) :
 
 TEMG::TEMG(QDeclarativeView *view, QWidget *parent)
     : QmlApplicationViewer(view,parent),
-    m_feedModel(new Feed(parent)),
+    m_feedModel(new ChatModel(parent)),
     m_statusIcon(new StatusIcon())
 {
     init();

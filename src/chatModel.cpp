@@ -1,21 +1,21 @@
-#include "feed.h"
+#include "chatModel.h"
 
-#include "chat.h"
+#include "chatItem.h"
 
 #include <QDebug>
 
-Feed::Feed(QObject *parent) :
+ChatModel::ChatModel(QObject *parent) :
     MyListModel(new Chat,parent)
 {
 }
 
-Feed::Feed(Chat* c, QObject *parent) :
+ChatModel::ChatModel(Chat* c, QObject *parent) :
     MyListModel(new Chat,parent)
 {
     appendRow(c);
 }
 
-void Feed::appendMessage(const TelegramNamespace::Message &m){
+void ChatModel::appendMessage(const TelegramNamespace::Message &m){
     bool groupChatMessage = m.peer.startsWith(QLatin1String("chat"));
     qWarning() << m.peer << m.contact << m.flags << m.id << m.text << m.type << m.timestamp;
 
@@ -37,10 +37,10 @@ void Feed::appendMessage(const TelegramNamespace::Message &m){
     }
 }
 
-void Feed::appendMessage(int idx, const TelegramNamespace::Message &m){
-    static_cast<Chat*>(m_list.at(idx))->appendMessage(new Message(m));
+void ChatModel::appendMessage(int idx, const TelegramNamespace::Message &m){
+    static_cast<Chat*>(m_list.at(idx))->appendMessage(new MessageItem(m));
 }
 
-void Feed::appendMessage(const QString& id, const TelegramNamespace::Message &m){
-    static_cast<Chat*>(find(id))->appendMessage(new Message(m));
+void ChatModel::appendMessage(const QString& id, const TelegramNamespace::Message &m){
+    static_cast<Chat*>(find(id))->appendMessage(new MessageItem(m));
 }

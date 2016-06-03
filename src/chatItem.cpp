@@ -1,4 +1,4 @@
-#include "chat.h"
+#include "chatItem.h"
 #include <QDebug>
 
 QString messageDeliveryStatusStr(TelegramNamespace::MessageDeliveryStatus status)
@@ -103,12 +103,12 @@ QVariant Chat::data(int role) const
 
 void Chat::appendMessage(const TelegramNamespace::Message& m){
     //check if id already exists. if this is the case, just update
-    m_messages.append(new Message(m));
+    m_messages.append(new MessageItem(m));
     emit dataChanged();
     //if timestamp doesn't exists, update it with QDateTime::currentMSecsSinceEpoch() / 1000;
 }
 
-void Chat::appendMessage(Message* msg){
+void Chat::appendMessage(MessageItem* msg){
     m_messages.append(msg);
     emit dataChanged();
 }
@@ -120,12 +120,12 @@ QString Chat::lastMessage() const{
 }
 
 //getters and setters
-QDeclarativeListProperty<Message> Chat::messages() const {
+QDeclarativeListProperty<MessageItem> Chat::messages() const {
     //return QDeclarativeListProperty<Message>(0, m_messages);
     //const QDeclarativeListProperty<Message> c(this, 0, &Chat::appendMessagesList, 0, &Chat::atMessagesList, &Chat::clearMessagesList);
     //const QDeclarativeListProperty<Message> c(const_cast<Chat*>(this), 0, 0,0,0,0);
     //return c;
-    return QDeclarativeListProperty<Message>(const_cast<Chat*>(this), 0, &Chat::appendMessagesList, 0, &Chat::atMessagesList, &Chat::clearMessagesList);
+    return QDeclarativeListProperty<MessageItem>(const_cast<Chat*>(this), 0, &Chat::appendMessagesList, 0, &Chat::atMessagesList, &Chat::clearMessagesList);
     //return *c;
 }
 

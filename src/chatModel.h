@@ -3,15 +3,15 @@
 #include "listmodel.h"
 
 #include <QObject>
-#include "chat.h"
+#include "chatItem.h"
 
-class Feed : public MyListModel
+class ChatModel : public MyListModel
 {
     Q_OBJECT
 
 public:
-    explicit Feed(QObject* parent = 0);
-    Feed(Chat* c, QObject* parent = 0);
+    explicit ChatModel(QObject* parent = 0);
+    ChatModel(Chat* c, QObject* parent = 0);
 
     void appendMessage(const TelegramNamespace::Message&);
     void appendMessage(int idx, const TelegramNamespace::Message &);
