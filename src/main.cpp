@@ -9,7 +9,7 @@
 #include "chatItem.h"
 #include "chatModel.h"
 #include "messageItem.h"
-#include "listmodel.h"
+#include "listModel.h"
 #include "statusicon.h"
 #include "temg.h"
 
@@ -22,9 +22,10 @@
 Q_DECL_EXPORT int main(int argc, char *argv[])
 {
     //temg: making classes available in QML
-    qmlRegisterType<ChatItem>("Temg.Core", 1,0, "Chat");
-    qmlRegisterType<MessageItem>("Temg.Core", 1,0, "Message");
-    qmlRegisterType<ChatModel>("Temg.Core", 1,0, "Feed");
+    qmlRegisterType<ChatItem>("Temg.Core", 1,0, "ChatItem");
+    qmlRegisterType<ChatModel>("Temg.Core", 1,0, "ChatModel");
+    qmlRegisterType<MessageItem>("Temg.Core", 1,0, "MessageItem");
+    qmlRegisterType<MessageModel>("Temg.Core", 1,0, "MessageModel");
     qmlRegisterType<StatusIcon>("Temg.Core", 1,0, "StatusIcon");
     //qmlRegisterType<Register>("Temg.Core", 1,0, "Register");
 

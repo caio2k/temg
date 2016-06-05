@@ -1,6 +1,6 @@
 #ifndef CHATMODEL_H
 #define CHATMODEL_H
-#include "listmodel.h"
+#include "listModel.h"
 
 #include <QObject>
 #include "chatItem.h"

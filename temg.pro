@@ -33,24 +33,24 @@ DEFINES += APP_VERSION=\\\"$$VERSION\\\"
 
 # The .cpp file which was generated for your project. Feel free to hack it.
 HEADERS += \
-    src/listmodel.h \
     src/temg.h \
     src/statusicon.h \
     enum.h \
     src/chatItem.h \
     src/chatModel.h \
     src/messageItem.h \
-    src/messageModel.h
+    src/messageModel.h \
+    src/listModel.h
 
 SOURCES += \
     src/main.cpp \
-    src/listmodel.cpp \
     src/temg.cpp \
     src/statusicon.cpp \
     src/chatModel.cpp \
     src/chatItem.cpp \
     src/messageItem.cpp \
-    src/messageModel.cpp
+    src/messageModel.cpp \
+    src/listModel.cpp
 
 TEMPLATE = app
 TARGET = temg
@@ -88,6 +88,12 @@ contains(MEEGO_EDITION,harmattan) {
 #    target.path = /opt/telegram-qt/lib
 #    INSTALLS += target
 }
+
+
+
+
+
+
 
 
 

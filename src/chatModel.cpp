@@ -20,7 +20,7 @@ void ChatModel::appendMessage(const TelegramNamespace::Message &m){
     qWarning() << m.peer << m.contact << m.flags << m.id << m.text << m.type << m.timestamp;
 
     if (groupChatMessage) {
-//        static_cast<Chat*>(m_list.at(idx))->appendMessage(m);
+//        static_cast<Chat*>(m_list->at(idx))->appendMessage(m);
     }
     else{
         ChatItem *c = static_cast<ChatItem*>(find(QString(m.peer)));
@@ -38,7 +38,7 @@ void ChatModel::appendMessage(const TelegramNamespace::Message &m){
 }
 
 void ChatModel::appendMessage(int idx, const TelegramNamespace::Message &m){
-    static_cast<ChatItem*>(m_list.at(idx))->appendMessage(new MessageItem(m));
+    static_cast<ChatItem*>(m_list->at(idx))->appendMessage(new MessageItem(m));
 }
 
 void ChatModel::appendMessage(const QString& id, const TelegramNamespace::Message &m){

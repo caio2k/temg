@@ -7,6 +7,7 @@
 TEMG::TEMG(QWidget *parent) :
     QmlApplicationViewer(parent),
     m_chatModel(new ChatModel(parent)),
+    m_messageModel(new MessageModel(parent)),
     m_statusIcon(new StatusIcon())
 {
     init();
@@ -15,6 +16,7 @@ TEMG::TEMG(QWidget *parent) :
 TEMG::TEMG(QDeclarativeView *view, QWidget *parent)
     : QmlApplicationViewer(view,parent),
     m_chatModel(new ChatModel(parent)),
+    m_messageModel(new MessageModel(parent)),
     m_statusIcon(new StatusIcon())
 {
     init();
@@ -300,8 +302,14 @@ void TEMG::whenRegisterSign(const QString& number, const QString& code, const QS
 }
 //temg x qml
 void TEMG::whenMessageModelUpdate(const int index){
-    QList<MessageItem*>* mi = (qobject_cast<ChatItem*>(m_chatModel->get(index)))->getQList();
-    //m_messageModel->
+    ChatItem* ci = qobject_cast<ChatItem*>(m_chatModel->get(index));
+    //ChatItem* ci = m_chatModel->get(index);
+    QList<MyListItem*>* mi = ci->getQList();
+    //delete m_messageModel;
+    //m_messageModel = new MessageModel();
+//    QList<MyListItem*>* mi = (qobject_cast<ChatItem*>(m_chatModel->get(index)))->getQList();
+    m_messageModel->setMessageItem(ci->getQList());
+
 
 }
 

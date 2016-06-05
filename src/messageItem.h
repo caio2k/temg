@@ -4,7 +4,7 @@
 #include <QObject>
 #include <QAbstractListModel>
 
-#include "listmodel.h"
+#include "listModel.h"
 
 #include "TelegramNamespace.hpp"
 

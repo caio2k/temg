@@ -5,7 +5,7 @@
 //#include <QList>
 #include <QDeclarativeListProperty>
 #include "messageItem.h"
-#include "listmodel.h"
+#include "listModel.h"
 #include "qdeclarativecontext.h"
 #include "CTelegramCore.hpp"
 
@@ -55,10 +55,9 @@ public:
     Q_INVOKABLE void appendMessage(const TelegramNamespace::Message&);
     Q_INVOKABLE void appendMessage(MessageItem*);
     Q_INVOKABLE void changeName(const QString&);
-    inline QList<MessageItem*> *getQList(){ return &m_messages;}
+    inline QList<MyListItem*>* getQList() const { return m_messages;}
     // getters and setters
     inline QString name() const { return m_name; }
-    Q_INVOKABLE QDeclarativeListProperty<MessageItem> messages() const;
 
     // inspired by telegram-qt
     QVariant headerData(int, Qt::Orientation, int role) const;
@@ -70,23 +69,12 @@ public:
         //    message->append(m);
         ChatItem* c = static_cast<ChatItem*>(l->object);
         m->setParent(c);
-        return c->m_messages.append(m);
+        return c->m_messages->append(m);
     }
-    int countMessagesList(QDeclarativeListProperty<MessageItem> *l)
-    {
-       ChatItem* c = static_cast<ChatItem*>(l->object);
-       return c->m_messages.count();
-    }
-    static MessageItem* atMessagesList(QDeclarativeListProperty<MessageItem> *property, int index) {
-       ChatItem* c = qobject_cast<ChatItem*>(property->object);
-       return c->m_messages.at(index);
-    }
-    static void clearMessagesList(QDeclarativeListProperty<MessageItem> *property) {
-       MessageItem* m = qobject_cast<MessageItem*>(property->object);
-    }
+
 private:
     QString m_name;
-    QList<MessageItem*> m_messages;
+    QList<MyListItem*>* m_messages;
 
 signals:
 

@@ -156,13 +156,13 @@ PageStackWindow {
               id: chatMouseArea
               anchors.fill: parent
               onClicked: {
-                  console.log(model.test);
-                  messagesModel.clear();
+                  messageModelUpdate(index);
+//                  messagesModel.clear();
 //                console.log("msgs "+ model.message);
-                  for (var i = 0; i < model.count ; i++)
-                  {
-                      messagesModel.append({"peer": model.peer[i], "content": model.text[i] });
-                  }
+//                  for (var i = 0; i < model.count ; i++)
+//                  {
+//                      messagesModel.append({"peer": model.peer[i], "content": model.text[i] });
+//                  }
                   pageStack.push(chatPage);
               }
           }
@@ -239,17 +239,6 @@ PageStackWindow {
       model: messagesModel
       anchors.fill: parent
     }
-  }
-  ListModel {
-      id: messagesModel
-      ListElement{
-          peer: "fulano"
-          content: "oi mundo"
-      }
-      ListElement{
-          peer: "fulano2"
-          content: "oi mundo2"
-      }
   }
   Component{
       id:messagesDelegate

@@ -76,7 +76,7 @@ private:
 
     //temg
     ChatModel* m_chatModel;
-    MessageModel * m_messageModel;
+    MessageModel *m_messageModel;
     StatusIcon* m_statusIcon;
     //Register* m_register;
     QString m_phoneNumber;

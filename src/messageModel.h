@@ -1,6 +1,6 @@
 #ifndef MESSAGEMODEL_H
 #define MESSAGEMODEL_H
-#include "listmodel.h"
+#include "listModel.h"
 
 #include "messageItem.h"
 
@@ -10,10 +10,12 @@ class MessageModel : public MyListModel
 
 public:
     explicit MessageModel(QObject* parent = 0);
+    void setMessageItem(QList<MyListItem*>* mi);
 
 private:
 
 signals:
+  void dataChanged();
 
 public slots:
 };
